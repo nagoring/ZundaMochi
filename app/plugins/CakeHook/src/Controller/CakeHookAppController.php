@@ -28,7 +28,6 @@ use Cake\Controller\Controller;
  * @link http://book.cakephp.org/3.0/en/controllers.html#the-app-controller
  */
 class CakeHookAppController extends Controller {
-	protected $nagomi = "nagonago";
 	public function beforeFilter(\Cake\Event\Event $event) {
 		parent::beforeFilter($event);
 //		CakeHook::action($group, $action, $param);
