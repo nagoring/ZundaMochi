@@ -28,4 +28,7 @@ class State {
 	public function getThis(){
 		return $this->_this;
 	}
+	public function getArgs(){
+		return $this->param['pass'];
+	}
 }

@@ -19,3 +19,4 @@ include dirname(__FILE__) . '/../View/HookView.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_app.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_articles.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_users.php';
+include dirname(__FILE__) . DS . 'zunda_mochi_pages.php';

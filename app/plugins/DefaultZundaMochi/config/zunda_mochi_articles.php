@@ -1,30 +1,35 @@
 <?php
+
+use Cake\Utility\Security;
+
 $viewClass = '\\DefaultZundaMochi\\View\\HookView';
 $group = 'App\Controller\ArticlesController';
 $action = 'add';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass){
-	/*@var $ctrl App\Controller\ArticlesController */
+\CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	/* @var $ctrl App\Controller\ArticlesController */
 	$param = $state->getParam();
-	$ctrl = $param['controller'];
+	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
-	
+
 	$article = $ctrl->Articles->newEntity($ctrl->request->data);
 	if ($ctrl->request->is('post')) {
 		clearstatcache();
-		$image = new \stdClass();
-		$image->file = $ctrl->request->data['file1'];
-		$image->filename = Security::hash($image->file['name'], 'md5');
-		$image->size = $image->file['size'];
-		$image->tmpName = $image->file['tmp_name'];
-		//TODOファイルサイズチェック
-		$image->info = getimagesize($image->tmpName);
-		$image->ext = $ctrl->Image->getExtenstion($image);
+		if (isset($ctrl->request->data['file1']) && $ctrl->request->data['file1']['tmp_name']) {
+			$image = new \stdClass();
+			$image->file = $ctrl->request->data['file1'];
+			$image->filename = Security::hash($image->file['name'], 'md5');
+			$image->size = $image->file['size'];
+			$image->tmpName = $image->file['tmp_name'];
+			//TODOファイルサイズチェック
+			$image->info = getimagesize($image->tmpName);
+			$image->ext = $ctrl->Image->getExtenstion($image);
 
-		$image->filedir = WWW_ROOT . 'i' . DS ;
+			$image->filedir = WWW_ROOT . 'i' . DS;
 //    function create_image($image, $filename, $quality = 75) {
-		$ctrl->Image->image($image);
-		//TODOarticle_imageに入れるためのロジックを書きます！
+			$ctrl->Image->image($image);
+			//TODOarticle_imageに入れるためのロジックを書きます！
+		}
 
 		$article->user_id = $ctrl->Auth->user('id');
 		if ($ctrl->Articles->save($article)) {
@@ -44,11 +49,11 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 
 $action = 'edit';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass){
+\CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$param = $state->getParam();
-	$ctrl = $param['controller'];
+	$ctrl = $state->getThis();
 	$args = $param['pass'];
-	if(count($args) === 0){
+	if (count($args) === 0) {
 		throw new NotFoundException(__('Invalid article'));
 	}
 	$ctrl->viewClass = $viewClass;
@@ -67,11 +72,11 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 
 $action = 'view';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass){
+\CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$param = $state->getParam();
-	$ctrl = $param['controller'];
+	$ctrl = $state->getThis();
 	$args = $param['pass'];
-	if(count($args) === 0){
+	if (count($args) === 0) {
 		throw new NotFoundException(__('Invalid article'));
 	}
 	$ctrl->viewClass = $viewClass;
@@ -80,3 +85,31 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 	$ctrl->set('article', $article);
 });
 
+$action = 'index';
+$index = 100;
+CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	$ctrl = $state->getThis();
+	$ctrl->viewClass = $viewClass;
+	$articles = $ctrl->Articles->find('all');
+	$ctrl->set(compact('articles'));
+});
+
+$action = 'delete';
+$index = 100;
+CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	$ctrl = $state->getThis();
+	$args = $state->getArgs();
+	$id = $args[0];
+	$ctrl->viewClass = $viewClass;
+	$ctrl->request->allowMethod(['post', 'delete']);
+	$article = $ctrl->Articles->get($id);
+	if ($ctrl->Articles->delete($article)) {
+		$ctrl->Flash->success(__('The article with id: {0} has been deleted.', h($id)));
+		return $ctrl->redirect(['action' => 'index']);
+	}
+	
+});
+
+
+//	public function delete($id) {
+//	}

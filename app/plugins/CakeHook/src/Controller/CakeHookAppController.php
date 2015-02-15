@@ -62,6 +62,7 @@ class CakeHookAppController extends Controller {
 			'_this' => $this,
 		]);
 		if ($isAction) {
+			$callable = [$this, $request->params['action']];
 			call_user_func_array($callable, $request->params['pass']);
 		}
 	}
