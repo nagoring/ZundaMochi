@@ -15,7 +15,7 @@ class Hook {
 		$_this = $param['_this'];
 		foreach(self::$_queue[$group][$action] as $_func){
 //			$func = $_func->bindTo($_this);
-			$res = $func($state);
+			$res = $_func($state);
 			$state->setReturn($res);
 		}
 		return $state->getReturn();
