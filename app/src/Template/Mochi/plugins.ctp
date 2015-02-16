@@ -10,7 +10,11 @@
 name : <?php echo $name?><br>
 version: <?php echo $json->version?><br>
 author: <?php echo $json->author?><br>
-<a href="<?php echo Cake\Routing\Router::url('/')?>mochi/acvivate_plugin/<?php echo $name?>">有効化</a>
+<?php if($json->is_activate):?>
+	<a href="<?php echo Cake\Routing\Router::url('/')?>mochi/deacvivate_plugin/<?php echo $name?>">無効化</a>
+<?php else:?>
+	<a href="<?php echo Cake\Routing\Router::url('/')?>mochi/acvivate_plugin/<?php echo $name?>">有効化</a>
+<?php endif?>
 
 編集
 削除
