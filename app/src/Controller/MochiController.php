@@ -26,6 +26,7 @@ class MochiController extends AppController {
 		$this->render('index', 'mochi');
 	}
 	public function plugins(){
+		$this->loadModel('PluginSettings');
 		$jsonFileName = 'cakehook.json';
 		$jsons = [];
 		//プラグインのパスを取得
@@ -34,14 +35,17 @@ class MochiController extends AppController {
 		//ディレクトリ検索
 		foreach($dirs as $dir){
 			if($dir === '.' || $dir === '..')continue;
-			echo $dir . "<br>";
 			//ZundaMochiプラグインが判定しつつ名前を取る
 			$jsonFileFullPath = $pluginDirPath . $dir . DS . $jsonFileName;
 			if(!file_exists($jsonFileFullPath))continue;
 			$json = file_get_contents($jsonFileFullPath);
 			$jsons[$dir] = json_decode($json);
+			$jsons[$dir]->is_activate = false;
 		}
-		$this->set('plugins', $jsons);
+		//データベースからアクティベート情報を付加する
+		$plugins = $this->PluginSettings->find('activated', ['plugins' => $jsons]);
+		
+		$this->set('plugins', $plugins);
 		//取得した情報を元にviewに渡す
 		$this->render('plugins', 'mochi');
 	}
@@ -72,6 +76,26 @@ class MochiController extends AppController {
 		$this->PluginSettings->save($pluginSetting);
 		
 		$this->redirect('mochi/plugins');
+	}
+	public function deacvivate_plugin($dir = null){
+		if($dir === null){
+			$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
+			return;
+		}
+		$this->loadModel('PluginSettings');
+		
+		$pluginSettingData = $this->PluginSettings->findByName($dir);
+		if($pluginSettingData === null){
+			$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
+			return;
+		}
+		$pluginSetting = $this->PluginSettings->newEntity();
+		$pluginSetting->id = $pluginSettingData->id;
+		$pluginSetting->name = $dir;
+		$pluginSetting->priority = 10;
+		$this->PluginSettings->save($pluginSetting);
+		$this->PluginSettings->delete($pluginSettingData->id);
+		$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
 	}
 	public function login() {
 		if ($this->request->is('post')) {
