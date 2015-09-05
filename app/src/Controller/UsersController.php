@@ -7,7 +7,7 @@ use Cake\Network\Exception\ForbiddenException;
 use Cake\Event\Event;
 
 class UsersController extends AppController {
-
+	protected $layout = 'mochi';
 	public function beforeFilter(Event $event) {
 		parent::beforeFilter($event);
 		$this->Auth->allow('add');

@@ -9,6 +9,7 @@ use Cake\Utility\Security;
  * @author nagomi
  */
 class ArticlesController extends AppController {
+	protected $layout = 'mochi';
 //	public function index() {
 //		$articles = $this->Articles->find('all');
 //		var_dump(compact($articles));

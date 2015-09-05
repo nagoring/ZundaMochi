@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 class MochiController extends AppController {
 	public function beforeFilter(Event $event) {
@@ -42,12 +43,23 @@ class MochiController extends AppController {
 			$jsons[$dir] = json_decode($json);
 			$jsons[$dir]->is_activate = false;
 		}
-		//データベースからアクティベート情報を付加する
+		//データベースからアクティベート情報 is_activate を付加する
+		/**
+		 * [$plugins stdClass fields]
+		 * version
+		 * author
+		 * name
+		 * is_activate
+		 */
+		/**@var $plugins[] stdClass*/
 		$plugins = $this->PluginSettings->find('activated', ['plugins' => $jsons]);
-		
 		$this->set('plugins', $plugins);
 		//取得した情報を元にviewに渡す
 		$this->render('plugins', 'mochi');
+	}
+	public function plugins_install(){
+		echo "工事中";
+		exit;
 	}
 	public function acvivate_plugin($dir = null){
 		if($dir === null){
@@ -56,7 +68,8 @@ class MochiController extends AppController {
 		}
 		$this->loadModel('PluginSettings');
 		
-		$pluginSettingData = $this->PluginSettings->findByName($dir);
+		$pluginSettingData = $this->PluginSettings->find()->where(['PluginSettings.name' => $dir])->first();
+	
 		if($pluginSettingData !== null){
 			$this->redirect(\Cake\Routing\Router::url('/'));
 			return;
@@ -69,11 +82,14 @@ class MochiController extends AppController {
 			$this->redirect(\Cake\Routing\Router::url('/'));
 			return;
 		}
-		$pluginSetting = $this->PluginSettings->newEntity();
 		//アクティベートする
-		$pluginSetting->name = $dir;
-		$pluginSetting->priority = 10;
-		$this->PluginSettings->save($pluginSetting);
+		$query = $this->PluginSettings->query()
+			->insert(['name', 'priority'])
+			->values([
+				'name' => $dir,
+				'priority' => 10,
+			])
+			->execute();
 		
 		$this->redirect('mochi/plugins');
 	}
@@ -83,18 +99,16 @@ class MochiController extends AppController {
 			return;
 		}
 		$this->loadModel('PluginSettings');
-		
-		$pluginSettingData = $this->PluginSettings->findByName($dir);
-		if($pluginSettingData === null){
+		$row = $this->PluginSettings->find()->where(['PluginSettings.name' => $dir])->first();
+		if($row === null){
 			$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
 			return;
 		}
-		$pluginSetting = $this->PluginSettings->newEntity();
-		$pluginSetting->id = $pluginSettingData->id;
-		$pluginSetting->name = $dir;
-		$pluginSetting->priority = 10;
-		$this->PluginSettings->save($pluginSetting);
-		$this->PluginSettings->delete($pluginSettingData->id);
+
+		$query = $this->PluginSettings->query();
+		$query->delete()
+			->where(['id' => $row->id])
+			->execute();
 		$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
 	}
 	public function login() {

@@ -1,7 +1,9 @@
+<div class="plugin-main-status">
 有効化
-    すべて (3) |
+    すべて (<?php echo count($plugins)?>) |
     使用中 (2) |
     停止中 (1)
+</div>
 インストールされているプラグインを検索:
 一括操作を選択
 3項目

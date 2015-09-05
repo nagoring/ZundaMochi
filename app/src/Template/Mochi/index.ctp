@@ -1,1 +1,1 @@
-indexだよ
+ZundaMochiはSNSサービスです

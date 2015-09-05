@@ -20,3 +20,4 @@ include dirname(__FILE__) . DS . 'zunda_mochi_app.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_articles.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_users.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_pages.php';
+include dirname(__FILE__) . DS . 'zunda_mochi_communities.php';

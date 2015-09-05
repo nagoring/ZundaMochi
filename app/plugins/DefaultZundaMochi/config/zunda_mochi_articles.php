@@ -1,6 +1,8 @@
 <?php
 
 use Cake\Utility\Security;
+use Cake\ORM\TableRegistry;
+
 
 $viewClass = '\\DefaultZundaMochi\\View\\HookView';
 $group = 'App\Controller\ArticlesController';
@@ -12,7 +14,6 @@ $index = 100;
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 
-	$article = $ctrl->Articles->newEntity($ctrl->request->data);
 	if ($ctrl->request->is('post')) {
 		clearstatcache();
 		if (isset($ctrl->request->data['file1']) && $ctrl->request->data['file1']['tmp_name']) {
@@ -31,7 +32,10 @@ $index = 100;
 			//TODOarticle_imageに入れるためのロジックを書きます！
 		}
 
+		$articlesTable = TableRegistry::get('Articles');
+		$article = $articlesTable->newEntity($ctrl->request->data);
 		$article->user_id = $ctrl->Auth->user('id');
+		
 		if ($ctrl->Articles->save($article)) {
 			$ctrl->Flash->success(__('Your article has been saved.'));
 			return $ctrl->redirect(['action' => 'index']);
@@ -90,7 +94,8 @@ $index = 100;
 CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
-	$articles = $ctrl->Articles->find('all');
+	$user_id = $ctrl->Auth->user('id');
+	$articles = $ctrl->Articles->find()->where(['Articles.user_id' => $user_id]);
 	$ctrl->set(compact('articles'));
 });
 
@@ -110,6 +115,12 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 	
 });
 
+$action = 'aaa';
+$index = 100;
+CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	$ctrl = $state->getThis();
+	$ctrl->viewClass = $viewClass;
+	$articles = $ctrl->Articles->find('all');
+	$ctrl->set(compact('articles'));
+});
 
-//	public function delete($id) {
-//	}

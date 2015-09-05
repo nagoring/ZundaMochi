@@ -9,5 +9,6 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 	
+	
 });
 

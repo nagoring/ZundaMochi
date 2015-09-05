@@ -27,7 +27,8 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 	$ctrl->viewClass = $viewClass;
 	$param = $state->getParam();
 	$ctrl = $param['controller'];
-	return $ctrl->redirect($ctrl->Auth->logout());
+	$ctrl->Auth->logout();
+	return $ctrl->redirect('/users/login');
 });
 
 

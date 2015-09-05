@@ -32,35 +32,25 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
-	<style>
-#sidebar{
-	width: 200px;
-	float:left;
-}
-		
-	</style>
 </head>
 <body>
     <header>
         <div class="header-title">
-            <span><a style="color:#ffffff;" href="/mochi/"><?= $this->fetch('title') ?></a></span>
+            <span><?= $this->fetch('title') ?></span>
         </div>
         <div class="header-help">
-            <span><a target="_blank" href="/users/logout">Logout</a></span>
             <span><a target="_blank" href="http://book.cakephp.org/3.0/">Documentation</a></span>
             <span><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></span>
         </div>
     </header>
     <div id="container">
+
         <div id="content">
-			<div id="sidebar">
-				<p><a href="<?php echo Cake\Routing\Router::url('/')?>mochi/plugins">プラグイン</a></p>
-				<p><a href="/mochi/plugins_install">プラグインインストール</a></p>
-				<p><a href="/users/index/">ユーザーリスト</a></p>
-				<p><a href="/articles/">記事一覧</a></p>
-				<p><a href="/communities/">コミュニティ</a></p>
-			</div>
             <?= $this->Flash->render() ?>
+			<div class="col">
+				<a href="<?php echo Cake\Routing\Router::url('/')?>mochi/plugins">プラグイン</a>
+				<a href="/mochi/plugins_install">プラグインインストール</a>
+			</div>
             <div class="row">
                 <?= $this->fetch('content') ?>
             </div>
