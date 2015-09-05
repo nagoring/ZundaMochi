@@ -15,30 +15,11 @@
 include_once dirname(__FILE__) . '/../View/HookView.php';
 //add Template path for View
 \CakeHook\TemplatePath::add(dirname(__FILE__) . DS . '..' . DS . 'Template' . DS);
-include dirname(__FILE__) . DS . 'zunda_mochi_app.php';
-include dirname(__FILE__) . DS . 'zunda_mochi_articles.php';
-include dirname(__FILE__) . DS . 'zunda_mochi_users.php';
-include dirname(__FILE__) . DS . 'zunda_mochi_pages.php';
 
 
-CakeHook\Filter::add('admin_menu_list', 101, function(\CakeHook\FilterState $state){
-	$beforeMenuList = $state->getReturn();
-	$menuList = [
-		(object)[
-			'name' => 'プラグイン',
-			'url' => '/mochi/plugins',
-		],
-		(object)[
-			'name' => 'プラグインインストール',
-			'url' => '/mochi/plugins_install',
-		],
-		(object)[
-			'name' => 'ユーザーリスト',
-			'url' => '/users/index/',
-		],
-	];
-	if(is_array($beforeMenuList)){
-		$menuList = array_merge($beforeMenuList, $menuList);
-	}
-	return $menuList;
-});
+
+include dirname(__FILE__) . DS . 'zunda_mochi_communities.php';
+
+
+//\CakeHook\Filter::add('admin_menu_list', 101, null);
+

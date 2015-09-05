@@ -29,6 +29,7 @@ class Hook {
 			for($i=$_index;$i<self::$_maxIndex + $_index;$i++){
 				if(!isset(self::$_queue[$group][$action][$i])){
 					self::$_queue[$group][$action][$i] = $func;
+					return ;
 				}
 			}
 			throw new \Exception('Failed addAction');

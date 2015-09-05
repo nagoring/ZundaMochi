@@ -7,8 +7,10 @@
 インストールされているプラグインを検索:
 一括操作を選択
 3項目
+<hr>
 
 <?php foreach($plugins as $name => $json):?>
+<div>
 name : <?php echo $name?><br>
 version: <?php echo $json->version?><br>
 author: <?php echo $json->author?><br>
@@ -20,5 +22,6 @@ author: <?php echo $json->author?><br>
 
 編集
 削除
-
+</div>
+<hr>
 <?php endforeach; ?>

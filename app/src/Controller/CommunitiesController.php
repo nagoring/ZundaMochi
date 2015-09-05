@@ -1,30 +1,95 @@
 <?php
-
 namespace App\Controller;
-use Cake\Utility\Security;
+
+use App\Controller\AppController;
 
 /**
- * Description of ArticlesController
+ * Communities Controller
  *
- * @author nagomi
+ * @property \App\Model\Table\CommunitiesTable $Communities
  */
-class CommunitiesController extends AppController {
-	protected $layout = 'mochi';
-	public function isAuthorized($user) {
-		// All registered users can add articles
-		if ($this->request->action === 'add') {
-			return true;
-		}
+class CommunitiesController extends AppController
+{
 
-		// The owner of an article can edit and delete it
-		if (in_array($this->request->action, ['edit', 'delete'])) {
-			$articleId = (int) $this->request->params['pass'][0];
-			if ($this->Articles->isOwnedBy($articleId, $user['id'])) {
-				return true;
-			}
-		}
 
-		return parent::isAuthorized($user);
-	}
+    /**
+     * View method
+     *
+     * @param string|null $id Community id.
+     * @return void
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $community = $this->Communities->get($id, [
+            'contain' => ['Calendars', 'Members']
+        ]);
+        $this->set('community', $community);
+        $this->set('_serialize', ['community']);
+    }
 
+    /**
+     * Add method
+     *
+     * @return void Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+        $community = $this->Communities->newEntity();
+        if ($this->request->is('post')) {
+            $community = $this->Communities->patchEntity($community, $this->request->data);
+            if ($this->Communities->save($community)) {
+                $this->Flash->success(__('The community has been saved.'));
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The community could not be saved. Please, try again.'));
+            }
+        }
+        $this->set(compact('community'));
+        $this->set('_serialize', ['community']);
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Community id.
+     * @return void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $community = $this->Communities->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $community = $this->Communities->patchEntity($community, $this->request->data);
+            if ($this->Communities->save($community)) {
+                $this->Flash->success(__('The community has been saved.'));
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The community could not be saved. Please, try again.'));
+            }
+        }
+        $this->set(compact('community'));
+        $this->set('_serialize', ['community']);
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Community id.
+     * @return void Redirects to index.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $community = $this->Communities->get($id);
+        if ($this->Communities->delete($community)) {
+            $this->Flash->success(__('The community has been deleted.'));
+        } else {
+            $this->Flash->error(__('The community could not be deleted. Please, try again.'));
+        }
+        return $this->redirect(['action' => 'index']);
+    }
 }

@@ -12,7 +12,7 @@
  * @since         0.10.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
+$menuList = CakeHook\Filter::filter('admin_menu_list', []);
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
@@ -54,6 +54,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <div id="container">
         <div id="content">
 			<div id="sidebar">
+				<?php foreach($menuList as $menu):?>
+				<p><a href="<?php echo $menu->url?>"><?php echo $menu->name?></a></p>
+				<?php endforeach?>
 				<p><a href="<?php echo Cake\Routing\Router::url('/')?>mochi/plugins">プラグイン</a></p>
 				<p><a href="/mochi/plugins_install">プラグインインストール</a></p>
 				<p><a href="/users/index/">ユーザーリスト</a></p>
