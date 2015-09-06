@@ -17,7 +17,7 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use CakeHook\Hook;
+use CakeHook\Action;
 
 /**
  * Application Controller
@@ -50,6 +50,11 @@ class AppController extends \CakeHook\Controller\CakeHookAppController {
 				'home'
 			]
 		]);
+		$pluginSettingsTable = \Cake\ORM\TableRegistry::get('PluginSettings');
+		$plugins = $pluginSettingsTable->find()->all();
+		foreach($plugins as $plugin){
+			\Cake\Core\Plugin::load($plugin->name, ['autoload' => true, 'bootstrap' => true]);
+		}
 	}
 
 	public function isAuthorized($user) {

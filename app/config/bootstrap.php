@@ -181,8 +181,8 @@ Request::addDetector('tablet', function ($request) {
 
 Plugin::load('Migrations');
 Plugin::load('CakeHook', ['autoload' => true]);
-Plugin::load('DefaultZundaMochi', ['autoload' => true, 'bootstrap' => true]);
-Plugin::load('Community', ['autoload' => true, 'bootstrap' => true]);
+//Plugin::load('DefaultZundaMochi', ['autoload' => true, 'bootstrap' => true]);
+
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system
@@ -197,3 +197,8 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
+
+
+Plugin::load('ContactManager', ['bootstrap' => true, 'routes' => true]);
+//Plugin::load('ContactManager', ['bootstrap' => true, 'routes' => true]);
+//Plugin::load('Community', ['autoload' => true, 'bootstrap' => true,  'routes' => true]);

@@ -12,9 +12,9 @@
  * @since         0.10.8
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-include_once dirname(__FILE__) . '/../View/HookView.php';
 //add Template path for View
-\CakeHook\TemplatePath::add(dirname(__FILE__) . DS . '..' . DS . 'Template' . DS);
+//\CakeHook\TemplatePath::add(dirname(__FILE__) . DS . '..' . DS . 'Template' . DS);
+\CakeHook\TemplatePath::add(dirname(__FILE__) . DS . '..' . DS . 'src' . DS .  'Template' . DS);
 
 
 
