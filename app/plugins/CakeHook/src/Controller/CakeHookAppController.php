@@ -46,7 +46,7 @@ class CakeHookAppController extends Controller {
 			throw new LogicException('No Request object configured. Cannot invoke action');
 		}
 		$isAction = $this->isAction($request->params['action']);
-		$isHookAction = \CakeHook\Hook::isAction(get_class($this), $request->params['action']);
+		$isHookAction = \CakeHook\Action::is(get_class($this), $request->params['action']);
 		if (!$isAction && !$isHookAction) {
 			throw new MissingActionException([
 		'controller' => $this->name . "Controller",
@@ -55,7 +55,7 @@ class CakeHookAppController extends Controller {
 		'plugin' => $request->params['plugin'],
 			]);
 		}
-		\CakeHook\Hook::action(get_class($this), $request->params['action'], [
+		\CakeHook\Action::action(get_class($this), $request->params['action'], [
 			'pass' => $request->params['pass'],
 			'controller' => $this,
 			'_this' => $this,

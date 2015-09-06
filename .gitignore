@@ -11,3 +11,5 @@ app/[Cc]onfig/database.php
 /nbproject/
 /nbproject/private/
 /nbproject/project.properties
+/app/plugins/Community/src/Template/Communities/add_1.ctp
+/app/composer_1.json
