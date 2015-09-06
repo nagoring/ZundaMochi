@@ -57,11 +57,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 				<?php foreach($menuList as $menu):?>
 				<p><a href="<?php echo $menu->url?>"><?php echo $menu->name?></a></p>
 				<?php endforeach?>
-				<p><a href="<?php echo Cake\Routing\Router::url('/')?>mochi/plugins">プラグイン</a></p>
-				<p><a href="/mochi/plugins_install">プラグインインストール</a></p>
-				<p><a href="/users/index/">ユーザーリスト</a></p>
-				<p><a href="/articles/">記事一覧</a></p>
-				<p><a href="/communities/">コミュニティ</a></p>
 			</div>
             <?= $this->Flash->render() ?>
             <div class="row">
