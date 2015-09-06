@@ -1,10 +1,10 @@
 <?php
 
-$viewClass = '\\DefaultZundaMochi\\View\\HookView';
+$viewClass = '\\CakeHook\\View\\HookView';
 $group = 'App\Controller\UsersController';
 $action = 'login';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	/* @var $ctrl App\Controller\UsersController */
 	$ctrl = $state->getThis();
 	$param = $state->getParam();
@@ -22,7 +22,7 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 
 $action = 'logout';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 	$param = $state->getParam();
@@ -34,7 +34,7 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 
 $action = 'index';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 	$ctrl->set('users', $ctrl->Users->find('all'));
@@ -42,7 +42,7 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 
 $action = 'add';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 	$user = $ctrl->Users->newEntity($ctrl->request->data);
@@ -58,7 +58,7 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 
 $action = 'view';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$ctrl = $state->getThis();
 	$args = $state->getArgs();
 	$ctrl->viewClass = $viewClass;

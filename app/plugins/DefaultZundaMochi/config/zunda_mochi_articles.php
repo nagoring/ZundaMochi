@@ -4,11 +4,11 @@ use Cake\Utility\Security;
 use Cake\ORM\TableRegistry;
 
 
-$viewClass = '\\DefaultZundaMochi\\View\\HookView';
+$viewClass = '\\CakeHook\\View\\HookView';
 $group = 'App\Controller\ArticlesController';
 $action = 'add';
 $index = 100;
-\CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	/* @var $ctrl App\Controller\ArticlesController */
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
@@ -53,7 +53,7 @@ $index = 100;
 
 $action = 'edit';
 $index = 100;
-\CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
 	$args = $param['pass'];
@@ -76,7 +76,7 @@ $index = 100;
 
 $action = 'view';
 $index = 100;
-\CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
 	$args = $param['pass'];
@@ -91,7 +91,7 @@ $index = 100;
 
 $action = 'index';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 	$user_id = $ctrl->Auth->user('id');
@@ -101,7 +101,7 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 
 $action = 'delete';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$ctrl = $state->getThis();
 	$args = $state->getArgs();
 	$id = $args[0];
@@ -117,7 +117,7 @@ CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $stat
 
 $action = 'aaa';
 $index = 100;
-CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 	$articles = $ctrl->Articles->find('all');

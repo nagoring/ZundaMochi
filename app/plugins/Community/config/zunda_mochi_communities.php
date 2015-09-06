@@ -3,6 +3,8 @@
 use Cake\Utility\Security;
 use Cake\ORM\TableRegistry;
 
+//Filter Logic
+//////////////////////////////
 \CakeHook\Filter::add('admin_menu_list', 101, function(\CakeHook\FilterState $state){
 	$beforeMenuList = $state->getReturn();
 	$menuList = [
@@ -18,11 +20,14 @@ use Cake\ORM\TableRegistry;
 	return $menuList;
 });
 
-$viewClass = '\\Community\\View\\HookView';
+//Action Logic
+//////////////////////////////
+$viewClass = '\\CakeHook\\View\\HookView';
 $group = 'App\Controller\CommunitiesController';
+
 $action = 'index';
 $index = 100;
-\CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	/* @var $ctrl App\Controller\ArticlesController */
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
@@ -33,15 +38,25 @@ $index = 100;
 
 });
 
-$viewClass = '\\Community\\View\\HookView';
-$group = 'App\Controller\CommunitiesController';
+
 $action = 'add';
 $index = 100;
-\CakeHook\Hook::addAction($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
 	/* @var $ctrl App\Controller\ArticlesController */
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
+});
+
+$group = 'ContactManager\Controller\ContactsController';
+$action = 'index';
+$index = 100;
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	/* @var $ctrl App\Controller\ArticlesController */
+	$param = $state->getParam();
+	$ctrl = $state->getThis();
+	$ctrl->viewClass = $viewClass;
+	return 'aaaaaaaa';
 });
 
 
