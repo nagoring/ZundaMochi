@@ -13,10 +13,11 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 //add Template path for View
-//\CakeHook\TemplatePath::add(dirname(__FILE__) . DS . '..' . DS . 'Template' . DS);
 \CakeHook\TemplatePath::add(dirname(__FILE__) . DS . '..' . DS . 'src' . DS .  'Template' . DS);
 
-
+Configure::write('CommunityRoleAdmin', 1);
+Configure::write('CommunityRoleDeputyAdmin', 2);
+Configure::write('CommunityRoleNormal', 3);
 
 include dirname(__FILE__) . DS . 'zunda_mochi_communities.php';
 

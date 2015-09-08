@@ -202,3 +202,7 @@ DispatcherFactory::add('ControllerFactory');
 Plugin::load('ContactManager', ['bootstrap' => true, 'routes' => true]);
 //Plugin::load('ContactManager', ['bootstrap' => true, 'routes' => true]);
 //Plugin::load('Community', ['autoload' => true, 'bootstrap' => true,  'routes' => true]);
+
+
+Configure::write('DIR_COMMUNITY', 'community');
+

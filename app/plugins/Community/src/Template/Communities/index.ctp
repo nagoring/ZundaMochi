@@ -8,26 +8,20 @@
     <table cellpadding="0" cellspacing="0">
     <thead>
         <tr>
+            <th>gazo</th>
             <th><?= $this->Paginator->sort('id') ?></th>
-            <th><?= $this->Paginator->sort('publish') ?></th>
             <th><?= $this->Paginator->sort('title') ?></th>
             <th><?= $this->Paginator->sort('thumbnail') ?></th>
-            <th><?= $this->Paginator->sort('status') ?></th>
-            <th><?= $this->Paginator->sort('status_name') ?></th>
-            <th><?= $this->Paginator->sort('modified') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
     <tbody>
     <?php foreach ($communities as $community): ?>
         <tr>
+            <td><img src="<?= $community->img_url?>"></td>
             <td><?= $this->Number->format($community->id) ?></td>
-            <td><?= $this->Number->format($community->publish) ?></td>
             <td><?= h($community->title) ?></td>
             <td><?= h($community->thumbnail) ?></td>
-            <td><?= $this->Number->format($community->status) ?></td>
-            <td><?= h($community->status_name) ?></td>
-            <td><?= h($community->modified) ?></td>
             <td class="actions">
                 <?= $this->Html->link(__('View'), ['action' => 'view', $community->id]) ?>
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $community->id]) ?>

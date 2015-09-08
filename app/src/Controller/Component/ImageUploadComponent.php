@@ -142,4 +142,17 @@ class ImageUploadComponent extends Component{
     		imagejpeg($image_resize,$image_file);
     	}
     }
+	public function getExtention($tmp_name){
+		$type = exif_imagetype($tmp_name);
+		if($type === IMAGETYPE_JPEG){
+			return '.jpg';
+		}
+		if($type === IMAGETYPE_PNG){
+			return '.png';
+		}
+		if($type === IMAGETYPE_GIF){
+			return '.gif';
+		}
+		return false;
+	}
 }

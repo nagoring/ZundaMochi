@@ -22,4 +22,28 @@ class Community extends Entity
         '*' => true,
         'id' => false,
     ];
+   protected function _getTitle($title)
+    {
+	   
+        return ucwords($title);
+    }	
+	protected function _setHello($value) {
+		return $value . " set;";
+	}
+	protected function _getHello() {
+		return   " hello ";
+	}
+    protected function _getFullName()
+    {
+        return $this->_properties['title'];
+    }
+	protected function _getImgUrl() {
+		$thumbnail = $this->_properties['thumbnail'];
+		if(!$thumbnail){
+			return 'http://placehold.it/150x150';
+		}
+		return $thumbnail;
+	}
+	
+
 }
