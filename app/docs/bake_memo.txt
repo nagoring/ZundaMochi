@@ -1,0 +1,3 @@
+php bin/cake.php bake controller Users
+php bin/cake.php bake model Users
+php bin/cake.php bake template Users
