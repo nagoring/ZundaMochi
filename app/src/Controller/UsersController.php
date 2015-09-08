@@ -6,12 +6,10 @@ use App\Controller\AppController;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Event\Event;
 
-class UsersController extends AppController {
+class UsersController extends UsersAppController {
 	protected $layout = 'mochi';
 	public function beforeFilter(Event $event) {
 		parent::beforeFilter($event);
-		$this->Auth->allow('add');
-		$this->Auth->allow(['add', 'logout']);
 	}
 
 //	public function login() {

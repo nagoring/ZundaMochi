@@ -8,11 +8,10 @@
     <?= $this->Form->create($community, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend><?= __('Add Community') ?></legend>
-        <?php
-            echo $this->Form->input('title');
-            echo $this->Form->input('body');
-            echo $this->Form->file('thumbnail',['accept' => 'image/png,image/jpeg,image/gif']);
-        ?>
+		<?php echo $this->Form->input('title', ['label' => __('コミュニティ名')]);?>
+		<?php echo $this->Form->input('body', ['label' => __('概要')]);?>
+		サムネイルをアップロードして下さい 125x125を基準にサムネイルが作成されます。
+		<?php echo $this->Form->file('thumbnail',['accept' => 'image/png,image/jpeg,image/gif']);?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>

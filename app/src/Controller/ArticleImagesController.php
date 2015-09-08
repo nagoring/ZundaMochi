@@ -8,7 +8,7 @@ use App\Controller\AppController;
  *
  * @property \App\Model\Table\ArticleImagesTable $ArticleImages
  */
-class ArticleImagesController extends AppController
+class ArticleImagesController extends UsersAppController
 {
 
     /**

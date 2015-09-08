@@ -8,7 +8,7 @@ use App\Controller\AppController;
  *
  * @property \App\Model\Table\CommunitiesTable $Communities
  */
-class CommunitiesController extends AppController
+class CommunitiesController extends UsersAppController
 {
 	public $layout = 'mochi';
 //	/**

@@ -7,22 +7,10 @@ use Cake\Network\Exception\ForbiddenException;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 
-class MochiController extends AppController {
+class MochiController extends UsersAppController {
 	public $layout = 'mochi';
 	public function beforeFilter(Event $event) {
 		parent::beforeFilter($event);
-		$this->Auth->allow('add');
-		$this->Auth->allow(['logout']);
-		$this->Auth->config('loginRedirect', [
-				'controller' => 'Mochi',
-				'action' => 'index'
-			]
-		);
-		$this->Auth->config('logoutRedirect', [
-				'controller' => 'Mochi',
-				'action' => 'login',
-			]
-		);
 	}
 	public function index(){
 		$this->render('index', 'mochi');

@@ -48,35 +48,27 @@ $index = 100;
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
+	$ctrl->loadComponent('ImageUpload');
 	
 	$community = $ctrl->Communities->newEntity();
 	if ($ctrl->request->is('post')) {
 		$community = $ctrl->Communities->patchEntity($community, $ctrl->request->data);
 		
-		if(isset($this->request->data['thumbnail']) && $this->request->data['thumbnail']){
-			$validateImage = function () use ($ctrl){
-				$error = $ctrl->request->data['thumbnail']['error'];
-				if($error === UPLOAD_ERR_OK){
-					return true;
+		$result = $ctrl->Communities->save($community);
+		if ($result) {
+			if(isset($ctrl->request->data['thumbnail']) && $ctrl->request->data['thumbnail']){
+				$tmp_name = $ctrl->request->data['thumbnail']['tmp_name'];
+				$error_msg = $ctrl->ImageUpload->validate($ctrl->request->data['thumbnail']['error'], $tmp_name);
+				if($error_msg !== true){
+					$ctrl->Flash->error($error_msg);
 				}
-				return false;
-			};
-			if(!$validateImage()){
-				$ctrl->Flash->error(__('ファイルのアップロードに失敗しました'));
+				$username = $ctrl->Auth->user('username');
+				$path = WWW_ROOT . DS . 'media' . DS . 'img' . DS . $username;
+				$filename = md5(Security::salt() . $result->id);
+				$width = 125;
+				$height = 125;
+				$ctrl->ImageUpload->createImage($tmp_name, $path, $filename, $width, $height) ;
 			}
-			$tmp_name = $ctrl->request->data['thumbnail']['tmp_name'];
-			
-//			checkAttackImage($image);
-			$filename = $ctrl->request->data['thumbnail']['name'];
-			$type = $ctrl->request->data['thumbnail']['type'];
-			$size = $ctrl->request->data['thumbnail']['size'];
-			$type = @exif_imagetype($tmp_name);
-			if (!in_array($type, [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG], true)) {
-				$ctrl->Flash->error(__('画像形式が未対応です'));
-			}			
-		}
-		
-		if ($ctrl->Communities->save($community)) {
 			$ctrl->Flash->success(__('The community has been saved.'));
 			return $ctrl->redirect(['action' => 'index']);
 		} else {
