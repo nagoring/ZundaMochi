@@ -5,16 +5,13 @@
     </ul>
 </div>
 <div class="communities form large-10 medium-9 columns">
-    <?= $this->Form->create($community) ?>
+    <?= $this->Form->create($community, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend><?= __('Add Community') ?></legend>
         <?php
-            echo $this->Form->input('publish');
             echo $this->Form->input('title');
             echo $this->Form->input('body');
-            echo $this->Form->input('thumbnail');
-            echo $this->Form->input('status');
-            echo $this->Form->input('status_name');
+            echo $this->Form->file('thumbnail',['accept' => 'image/png,image/jpeg,image/gif']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

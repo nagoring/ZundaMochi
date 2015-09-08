@@ -8,6 +8,7 @@ use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 
 class MochiController extends AppController {
+	public $layout = 'mochi';
 	public function beforeFilter(Event $event) {
 		parent::beforeFilter($event);
 		$this->Auth->allow('add');

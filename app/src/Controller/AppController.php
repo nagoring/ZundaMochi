@@ -66,6 +66,7 @@ class AppController extends \CakeHook\Controller\CakeHookAppController {
 
 	public function beforeFilter(\Cake\Event\Event $event) {
 		parent::beforeFilter($event);
+		\CakeHook\Filter::filter('app.beforeFilter', $event);
 		$this->Auth->allow(['index', 'view']);
 	}
 

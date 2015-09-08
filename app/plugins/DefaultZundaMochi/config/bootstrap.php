@@ -14,6 +14,7 @@
  */
 //add Template path for View
 \CakeHook\TemplatePath::add(dirname(__FILE__) . DS . '..' . DS . 'src' . DS .  'Template' . DS);
+include dirname(__FILE__) . DS . 'function.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_app.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_articles.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_users.php';
@@ -23,6 +24,10 @@ include dirname(__FILE__) . DS . 'zunda_mochi_pages.php';
 CakeHook\Filter::add('admin_menu_list', 101, function(\CakeHook\FilterState $state){
 	$beforeMenuList = $state->getReturn();
 	$menuList = [
+		(object)[
+			'name' => 'ダッシュボード',
+			'url' => '/mochi/',
+		],
 		(object)[
 			'name' => 'プラグイン',
 			'url' => '/mochi/plugins',

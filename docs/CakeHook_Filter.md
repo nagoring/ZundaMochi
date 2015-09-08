@@ -4,8 +4,9 @@
 -- name string
 @return array
 
-
-
+#app.beforeFilter
+@param
+-- event \Cake\Event\Event
 
 
 
