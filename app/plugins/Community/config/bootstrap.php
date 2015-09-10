@@ -12,6 +12,8 @@
  * @since         0.10.8
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+use Cake\Core\Configure;
+
 //add Template path for View
 \CakeHook\TemplatePath::add(dirname(__FILE__) . DS . '..' . DS . 'src' . DS .  'Template' . DS);
 

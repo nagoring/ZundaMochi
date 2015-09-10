@@ -42,7 +42,7 @@ class Community extends Entity
 		if(!$thumbnail){
 			return 'http://placehold.it/150x150';
 		}
-		return $thumbnail;
+		return 'http://' . $_SERVER['HTTP_HOST'] . '/media/img/' . $thumbnail;
 	}
 	
 

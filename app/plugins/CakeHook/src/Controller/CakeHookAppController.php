@@ -17,6 +17,10 @@
 namespace CakeHook\Controller;
 
 use Cake\Controller\Controller;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use RuntimeException;
 //use CakeHook;
 
 /**
@@ -45,7 +49,7 @@ class CakeHookAppController extends Controller {
 		if (!isset($request)) {
 			throw new LogicException('No Request object configured. Cannot invoke action');
 		}
-		$isAction = $this->isAction($request->params['action']);
+		$isAction = $this->isActionRaw($request->params['action']);
 		$isHookAction = \CakeHook\Action::is(get_class($this), $request->params['action']);
 		if (!$isAction && !$isHookAction) {
 			throw new MissingActionException([
@@ -64,6 +68,30 @@ class CakeHookAppController extends Controller {
 			$callable = [$this, $request->params['action']];
 			call_user_func_array($callable, $request->params['pass']);
 		}
+	}
+    public function isAction($action)
+    {
+		//Hookを使うとReflectionでメソッドが無いけど呼び出せる状態になるためオーバーライドしてhookの中身もチェック
+		$isHookAction = \CakeHook\Action::is(get_class($this), $action);
+		if($isHookAction){
+			return true;
+		}
+		return parent::isAction($action);
+    }
+	public function isActionRaw($action){
+        $baseClass = new ReflectionClass('Cake\Controller\Controller');
+        if ($baseClass->hasMethod($action)) {
+            return false;
+        }
+        try {
+            $method = new ReflectionMethod($this, $action);
+        } catch (ReflectionException $e) {
+            return false;
+        }
+        if (!$method->isPublic()) {
+            return false;
+        }
+        return true;		
 	}
 
 }

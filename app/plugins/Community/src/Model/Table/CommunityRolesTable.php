@@ -1,20 +1,20 @@
 <?php
-namespace App\Model\Table;
+namespace Community\Model\Table;
 
-use App\Model\Entity\CommunityMember;
+use App\Model\Entity\CommunityRole;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * CommunityMembers Model
+ * CommunityRoles Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Communities
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $CommunityRoles
+ * @property \Cake\ORM\Association\HasMany $CommunityMembers
+ * @property \Cake\ORM\Association\HasMany $RolePermission
  */
-class CommunityMembersTable extends Table
+class CommunityRolesTable extends Table
 {
 
     /**
@@ -27,21 +27,19 @@ class CommunityMembersTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('community_members');
-        $this->displayField('id');
+        $this->table('community_roles');
+        $this->displayField('name');
         $this->primaryKey('id');
 
         $this->belongsTo('Communities', [
             'foreignKey' => 'community_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+        $this->hasMany('CommunityMembers', [
+            'foreignKey' => 'community_role_id'
         ]);
-        $this->belongsTo('CommunityRoles', [
-            'foreignKey' => 'community_role_id',
-            'joinType' => 'INNER'
+        $this->hasMany('RolePermission', [
+            'foreignKey' => 'community_role_id'
         ]);
     }
 
@@ -58,18 +56,23 @@ class CommunityMembersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('notice_flag', 'create')
-            ->notEmpty('notice_flag');
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
 
         $validator
-            ->add('modified_at', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('modified_at', 'create')
-            ->notEmpty('modified_at');
+            ->add('system_flag', 'valid', ['rule' => 'boolean'])
+            ->requirePresence('system_flag', 'create')
+            ->notEmpty('system_flag');
 
         $validator
-            ->add('created_at', 'valid', ['rule' => 'numeric'])
+            ->add('created_at', 'valid', ['rule' => 'datetime'])
             ->requirePresence('created_at', 'create')
             ->notEmpty('created_at');
+
+        $validator
+            ->add('modified_at', 'valid', ['rule' => 'datetime'])
+            ->requirePresence('modified_at', 'create')
+            ->notEmpty('modified_at');
 
         return $validator;
     }
@@ -84,8 +87,6 @@ class CommunityMembersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['community_id'], 'Communities'));
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['community_role_id'], 'CommunityRoles'));
         return $rules;
     }
 }

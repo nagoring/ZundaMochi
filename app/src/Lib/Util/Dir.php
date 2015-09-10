@@ -1,5 +1,6 @@
 <?php
 namespace App\Lib\Util;
+use Cake\Core\Configure;
 /**
  * Description of Dir
  *
@@ -26,7 +27,7 @@ class Dir {
 		}
 	}
 	public function communityImageFilename($community_id, $username){
-		return md5(Security::salt() . $community_id . $username . 'Community');
+		return md5(\Cake\Utility\Security::salt() . $community_id . $username . 'Community');
 	}
 	public function communityImageDir($username){
 		$dir = Configure::read('DIR_COMMUNITY');

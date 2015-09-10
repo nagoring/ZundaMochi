@@ -11,7 +11,6 @@
             <th>gazo</th>
             <th><?= $this->Paginator->sort('id') ?></th>
             <th><?= $this->Paginator->sort('title') ?></th>
-            <th><?= $this->Paginator->sort('thumbnail') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
@@ -21,7 +20,6 @@
             <td><img src="<?= $community->img_url?>"></td>
             <td><?= $this->Number->format($community->id) ?></td>
             <td><?= h($community->title) ?></td>
-            <td><?= h($community->thumbnail) ?></td>
             <td class="actions">
                 <?= $this->Html->link(__('View'), ['action' => 'view', $community->id]) ?>
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $community->id]) ?>

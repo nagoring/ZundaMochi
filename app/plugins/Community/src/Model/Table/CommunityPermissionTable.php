@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Table;
+namespace Community\Model\Table;
 
 use App\Model\Entity\CommunityPermission;
 use Cake\ORM\Query;

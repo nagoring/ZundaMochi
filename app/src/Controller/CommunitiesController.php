@@ -11,6 +11,12 @@ use App\Controller\AppController;
 class CommunitiesController extends UsersAppController
 {
 	public $layout = 'mochi';
+	public function beforeFilter(\Cake\Event\Event $event) {
+		parent::beforeFilter($event);
+	}
+//	public function index(){
+//		
+//	}
 //	/**
 //     * View method
 //     *

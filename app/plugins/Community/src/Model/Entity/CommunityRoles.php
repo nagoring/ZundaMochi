@@ -1,12 +1,12 @@
 <?php
-namespace App\Model\Entity;
+namespace Community\Model\Entity;
 
 use Cake\ORM\Entity;
 
 /**
- * CommunityPermission Entity.
+ * CommunityRoles Entity.
  */
-class CommunityPermission extends Entity
+class CommunityRoles extends Entity
 {
 
     /**
