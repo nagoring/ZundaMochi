@@ -21,6 +21,7 @@ Configure::write('CommunityRoleAdmin', 1);
 Configure::write('CommunityRoleDeputyAdmin', 2);
 Configure::write('CommunityRoleNormal', 3);
 
+include dirname(__FILE__) . DS . 'filter.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_communities.php';
 
 
