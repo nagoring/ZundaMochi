@@ -32,7 +32,6 @@ class UsersAppController extends \App\Controller\AppController {
 	public function beforeFilter(\Cake\Event\Event $event) {
 		parent::beforeFilter($event);
 		\CakeHook\Filter::filter('app.beforeFilter', $event);
-//		$this->Auth->allow(['index', 'view']);
 		$this->Auth->allow('add');
 		$this->Auth->allow(['logout']);
 		$this->Auth->config('loginRedirect', [
@@ -87,12 +86,6 @@ class UsersAppController extends \App\Controller\AppController {
 				'home'
 			]
 		]);
-		
-		$pluginSettingsTable = \Cake\ORM\TableRegistry::get('PluginSettings');
-		$plugins = $pluginSettingsTable->find()->all();
-		foreach($plugins as $plugin){
-			\Cake\Core\Plugin::load($plugin->name, ['autoload' => true, 'bootstrap' => true]);
-		}
 	}
 
 	public function isAuthorized($user) {
