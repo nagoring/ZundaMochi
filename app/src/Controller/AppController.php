@@ -53,7 +53,8 @@ class AppController extends \CakeHook\Controller\CakeHookAppController {
 		$pluginSettingsTable = \Cake\ORM\TableRegistry::get('PluginSettings');
 		$plugins = $pluginSettingsTable->find()->all();
 		foreach($plugins as $plugin){
-			\Cake\Core\Plugin::load($plugin->name, ['autoload' => true, 'bootstrap' => true]);
+			\Cake\Core\Plugin::load($plugin->name, ['autoload' => true, 'bootstrap' => true, 'routes' => true]);
+//			include dirname(__FILE__) . '/../plugins/Community/routes.php';
 		}
 	}
 

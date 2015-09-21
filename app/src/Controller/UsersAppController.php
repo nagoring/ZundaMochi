@@ -27,7 +27,8 @@ use CakeHook\Action;
  *
  * @link http://book.cakephp.org/3.0/en/controllers.html#the-app-controller
  */
-class UsersAppController extends \CakeHook\Controller\CakeHookAppController {
+//class UsersAppController extends \CakeHook\Controller\CakeHookAppController {
+class UsersAppController extends \App\Controller\AppController {
 	public function beforeFilter(\Cake\Event\Event $event) {
 		parent::beforeFilter($event);
 		\CakeHook\Filter::filter('app.beforeFilter', $event);
@@ -43,6 +44,27 @@ class UsersAppController extends \CakeHook\Controller\CakeHookAppController {
 				'controller' => 'Mochi',
 				'action' => 'login',
 			]);
+		\CakeHook\Filter::add('admin_menu_list', 101, function(\CakeHook\FilterState $state){
+			$beforeMenuList = $state->getReturn();
+			$menuList = [
+				(object)[
+					'name' => 'ダッシュボード',
+					'url' => '/mochi/',
+				],
+				(object)[
+					'name' => 'プラグイン',
+					'url' => '/mochi/plugins',
+				],
+				(object)[
+					'name' => 'プラグインインストール',
+					'url' => '/mochi/plugins_install',
+				],
+			];
+			if(is_array($beforeMenuList)){
+				$menuList = array_merge($beforeMenuList, $menuList);
+			}
+			return $menuList;
+		});
 	}
 	/**
 	 * Initialization hook method.

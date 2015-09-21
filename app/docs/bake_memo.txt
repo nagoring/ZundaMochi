@@ -7,3 +7,4 @@ php bin/cake.php bake model CommunityMembers
 php bin/cake.php bake template CommunityMembers
 
 
+php bin/cake.php bake model CommunityRoles

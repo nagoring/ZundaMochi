@@ -49,6 +49,7 @@ class CakeHookAppController extends Controller {
 		if (!isset($request)) {
 			throw new LogicException('No Request object configured. Cannot invoke action');
 		}
+
 		$isAction = $this->isActionRaw($request->params['action']);
 		$isHookAction = \CakeHook\Action::is(get_class($this), $request->params['action']);
 		if (!$isAction && !$isHookAction) {

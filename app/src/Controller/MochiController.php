@@ -17,21 +17,6 @@ class MochiController extends UsersAppController {
 	}
 	public function plugins(){
 		$this->loadModel('PluginSettings');
-		$jsonFileName = 'cakehook.json';
-		$jsons = [];
-		//プラグインのパスを取得
-		$pluginDirPath = ROOT . DS . 'plugins' . DS;
-		$dirs = scandir($pluginDirPath);
-		//ディレクトリ検索
-		foreach($dirs as $dir){
-			if($dir === '.' || $dir === '..')continue;
-			//ZundaMochiプラグインが判定しつつ名前を取る
-			$jsonFileFullPath = $pluginDirPath . $dir . DS . $jsonFileName;
-			if(!file_exists($jsonFileFullPath))continue;
-			$json = file_get_contents($jsonFileFullPath);
-			$jsons[$dir] = json_decode($json);
-			$jsons[$dir]->is_activate = false;
-		}
 		//データベースからアクティベート情報 is_activate を付加する
 		/**
 		 * [$plugins stdClass fields]
@@ -41,8 +26,10 @@ class MochiController extends UsersAppController {
 		 * is_activate
 		 */
 		/**@var $plugins[] stdClass*/
-		$plugins = $this->PluginSettings->find('activated', ['plugins' => $jsons]);
-		$this->set('plugins', $plugins);
+//		$activationPluginArray = \App\Lib\Logic\Plugin::getInstance()->load();
+//		$plugins = $this->PluginSettings->find('activated', ['plugins' => $jsons]);
+		$activationPluginArray = \App\Lib\Logic\Plugin::getInstance()->loadAll();
+		$this->set('plugins', $activationPluginArray);
 		//取得した情報を元にviewに渡す
 		$this->render('plugins', 'mochi');
 	}
@@ -55,15 +42,6 @@ class MochiController extends UsersAppController {
 			$this->redirect(\Cake\Routing\Router::url('/'));
 			return;
 		}
-		$this->loadModel('PluginSettings');
-		
-		$pluginSettingData = $this->PluginSettings->find()->where(['PluginSettings.name' => $dir])->first();
-	
-		if($pluginSettingData !== null){
-			$this->redirect(\Cake\Routing\Router::url('/'));
-			return;
-		}
-		
 		$pluginDirPath = ROOT . DS . 'plugins' . DS;
 		$jsonFileName = 'cakehook.json';
 		$jsonFileFullPath = $pluginDirPath . $dir . DS . $jsonFileName;
@@ -71,14 +49,23 @@ class MochiController extends UsersAppController {
 			$this->redirect(\Cake\Routing\Router::url('/'));
 			return;
 		}
-		//アクティベートする
-		$query = $this->PluginSettings->query()
-			->insert(['name', 'priority'])
-			->values([
-				'name' => $dir,
-				'priority' => 10,
-			])
-			->execute();
+		\App\Lib\Logic\Plugin::getInstance()->activate([
+			'name' => $dir,
+			'priority' => 10,
+		]);
+//		$this->loadModel('PluginSettings');
+//		$pluginSettingData = $this->PluginSettings->find()->where(['PluginSettings.name' => $dir])->first();
+//		if($pluginSettingData !== null){
+//			$this->redirect(\Cake\Routing\Router::url('/'));
+//			return;
+//		}
+//		$query = $this->PluginSettings->query()
+//			->insert(['name', 'priority'])
+//			->values([
+//				'name' => $dir,
+//				'priority' => 10,
+//			])
+//			->execute();
 		
 		$this->redirect('mochi/plugins');
 	}
@@ -87,17 +74,17 @@ class MochiController extends UsersAppController {
 			$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
 			return;
 		}
-		$this->loadModel('PluginSettings');
-		$row = $this->PluginSettings->find()->where(['PluginSettings.name' => $dir])->first();
-		if($row === null){
-			$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
-			return;
-		}
-
-		$query = $this->PluginSettings->query();
-		$query->delete()
-			->where(['id' => $row->id])
-			->execute();
+		\App\Lib\Logic\Plugin::getInstance()->deactivate($dir);
+//		$this->loadModel('PluginSettings');
+//		$row = $this->PluginSettings->find()->where(['PluginSettings.name' => $dir])->first();
+//		if($row === null){
+//			$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
+//			return;
+//		}
+//		$query = $this->PluginSettings->query();
+//		$query->delete()
+//			->where(['id' => $row->id])
+//			->execute();
 		$this->redirect(\Cake\Routing\Router::url('/') . 'mochi/plugins');
 	}
 	public function login() {

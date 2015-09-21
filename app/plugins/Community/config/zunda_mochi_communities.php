@@ -12,7 +12,7 @@ use Cake\Core\Configure;
 
 		(object)[
 			'name' => 'コミュニティ',
-			'url' => '/communities/',
+			'url' => '/community/communities/',
 		],
 	];
 	if(is_array($beforeMenuList)){
@@ -24,7 +24,8 @@ use Cake\Core\Configure;
 //Action Logic
 //////////////////////////////
 $viewClass = '\\CakeHook\\View\\HookView';
-$group = 'App\Controller\CommunitiesController';
+//$group = 'App\Controller\CommunitiesController';
+$group = 'Community\Controller\CommunitiesController';
 
 $action = 'index';
 $index = 100;

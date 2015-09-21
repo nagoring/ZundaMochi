@@ -17,37 +17,7 @@
 include dirname(__FILE__) . DS . 'function.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_app.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_articles.php';
-include dirname(__FILE__) . DS . 'zunda_mochi_users.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_pages.php';
+include dirname(__FILE__) . DS . 'filter.php';
 
 
-CakeHook\Filter::add('admin_menu_list', 101, function(\CakeHook\FilterState $state){
-	$beforeMenuList = $state->getReturn();
-	$menuList = [
-		(object)[
-			'name' => 'ダッシュボード',
-			'url' => '/mochi/',
-		],
-		(object)[
-			'name' => 'プラグイン',
-			'url' => '/mochi/plugins',
-		],
-		(object)[
-			'name' => 'プラグインインストール',
-			'url' => '/mochi/plugins_install',
-		],
-		(object)[
-			'name' => 'ユーザーリスト',
-			'url' => '/users/index/',
-		],
-		(object)[
-			'name' => '記事一覧',
-			'url' => '/articles/',
-		],
-
-	];
-	if(is_array($beforeMenuList)){
-		$menuList = array_merge($beforeMenuList, $menuList);
-	}
-	return $menuList;
-});

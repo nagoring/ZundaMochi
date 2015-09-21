@@ -199,9 +199,15 @@ DispatcherFactory::add('ControllerFactory');
 
 
 
+//Plugin::load('DefaultZundaMochi', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('ContactManager', ['bootstrap' => true, 'routes' => true]);
 //Plugin::load('ContactManager', ['bootstrap' => true, 'routes' => true]);
-//Plugin::load('Community', ['autoload' => true, 'bootstrap' => true,  'routes' => true]);
+
+$activationPluginArray = \App\Lib\Logic\Plugin::getInstance()->load();
+foreach($activationPluginArray as $plugin){
+	Plugin::load($plugin->name, ['autoload' => true, 'bootstrap' => true,  'routes' => true]);
+}
+
 
 
 Configure::write('DIR_COMMUNITY', 'community');

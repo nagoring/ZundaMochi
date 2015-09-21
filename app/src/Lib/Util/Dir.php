@@ -36,4 +36,7 @@ class Dir {
 	public function imageUserDir($username){
 		return WWW_ROOT . DS . 'media' . DS . 'img' . DS . $username;
 	}
+	public function pluginActivationJsonFilePath(){
+		return APP . '..' . DS .  'config' . DS . 'plugin_activatation.json';
+	}
 }
