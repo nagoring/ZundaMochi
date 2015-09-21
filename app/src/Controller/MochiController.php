@@ -13,6 +13,9 @@ class MochiController extends UsersAppController {
 		parent::beforeFilter($event);
 	}
 	public function index(){
+
+			$this->set('authUser', $this->Auth->user());
+		
 		$this->render('index', 'mochi');
 	}
 	public function plugins(){
@@ -33,8 +36,9 @@ class MochiController extends UsersAppController {
 		//取得した情報を元にviewに渡す
 		$this->render('plugins', 'mochi');
 	}
-	public function plugins_install(){
-		echo "工事中";
+	public function plugins_install($id = null){
+		echo "factory!!<br>";
+		echo "id:{$id}<br>";
 		exit;
 	}
 	public function acvivate_plugin($dir = null){

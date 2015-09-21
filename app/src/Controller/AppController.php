@@ -39,17 +39,17 @@ class AppController extends \CakeHook\Controller\CakeHookAppController {
 	public function initialize() {
 		$this->loadComponent('Flash');
 		$this->loadComponent('Image');
-		$this->loadComponent('Auth', [
-			'loginRedirect' => [
-				'controller' => 'Articles',
-				'action' => 'index'
-			],
-			'logoutRedirect' => [
-				'controller' => 'Pages',
-				'action' => 'display',
-				'home'
-			]
-		]);
+//		$this->loadComponent('Auth', [
+//			'loginRedirect' => [
+//				'controller' => 'Articles',
+//				'action' => 'index'
+//			],
+//			'logoutRedirect' => [
+//				'controller' => 'Pages',
+//				'action' => 'display',
+//				'home'
+//			]
+//		]);
 		$pluginSettingsTable = \Cake\ORM\TableRegistry::get('PluginSettings');
 		$plugins = $pluginSettingsTable->find()->all();
 		foreach($plugins as $plugin){
@@ -68,7 +68,6 @@ class AppController extends \CakeHook\Controller\CakeHookAppController {
 	public function beforeFilter(\Cake\Event\Event $event) {
 		parent::beforeFilter($event);
 		\CakeHook\Filter::filter('app.beforeFilter', $event);
-		$this->Auth->allow(['index', 'view']);
 	}
 
 }

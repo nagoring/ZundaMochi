@@ -20,6 +20,9 @@ use Cake\Core\Configure;
 Configure::write('CommunityRoleAdmin', 1);
 Configure::write('CommunityRoleDeputyAdmin', 2);
 Configure::write('CommunityRoleNormal', 3);
+Configure::write('Community.thumbnail.width', 125);
+Configure::write('Community.thumbnail.height', 125);
+
 
 include dirname(__FILE__) . DS . 'filter.php';
 include dirname(__FILE__) . DS . 'zunda_mochi_communities.php';

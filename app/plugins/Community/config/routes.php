@@ -7,12 +7,12 @@ Router::plugin('Community', function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
-Router::scope('/m', ['plugin' => 'Community'], function ($routes) {
+Router::scope('/m', ['plugin' => 'Community', 'controller' => 'Communities', 'action' => 'view'], function ($routes) {
     $routes->connect(
 		'/co:id', 
 		['controller' => 'Communities', 'action' => 'view'],
 		[
-			'pass' => 'id',
+//			'pass' => 'id',
 			':id' => '[0-9]+',
 		]
 	);
