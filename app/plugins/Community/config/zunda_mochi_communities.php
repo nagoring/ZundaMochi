@@ -4,22 +4,6 @@ use Cake\Utility\Security;
 use Cake\ORM\TableRegistry;
 use Cake\Core\Configure;
 
-//Filter Logic
-//////////////////////////////
-\CakeHook\Filter::add('admin_menu_list', 101, function(\CakeHook\FilterState $state){
-	$beforeMenuList = $state->getReturn();
-	$menuList = [
-
-		(object)[
-			'name' => 'コミュニティ',
-			'url' => '/community/communities/',
-		],
-	];
-	if(is_array($beforeMenuList)){
-		$menuList = array_merge($beforeMenuList, $menuList);
-	}
-	return $menuList;
-});
 
 //Action Logic
 //////////////////////////////
@@ -136,6 +120,27 @@ $index = 100;
 	$ctrl->set(compact('community'));
 	$ctrl->set('_serialize', ['community']);
 });
+
+$action = 'view';
+$index = 100;
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	/* @var $ctrl App\Controller\ArticlesController */
+	$param = $state->getParam();
+	$ctrl = $state->getThis();
+	$ctrl->layout = 'mochi';
+	$ctrl->viewClass = $viewClass;
+	$community_id = (int)$ctrl->request->params['id'];
+	echo "com:{$community_id}<br>";
+	exit;
+	echo "view";
+	exit;
+//	$config = TableRegistry::exists('Communities') ? [] : ['className' => 'Community\Model\Table\CommunitiesTable'];
+//	$ctrl->Communities = TableRegistry::get('Communities', $config);
+//    $ctrl->set('communities', $ctrl->paginate($ctrl->Communities));
+//    $ctrl->set('_serialize', ['communities']);
+
+});
+
 
 //$group = 'ContactManager\Controller\ContactsController';
 //$action = 'index';
