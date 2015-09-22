@@ -7,7 +7,7 @@ namespace CakeHook;
  */
 class Action {
 	protected static $_queue = [];
-	protected static $_maxIndex = 255;
+	protected static $_maxIndex = 1024;
 	/**
 	 * 登録されたアクションの呼び出し
 	 * groupとactionを指定して登録したアクションを逐次実行する
@@ -21,7 +21,6 @@ class Action {
 		if(!isset(self::$_queue[$group][$action]))return;
 		ksort(self::$_queue[$group][$action]);
 		$state = new \CakeHook\State($param);
-		$_this = $param['_this'];
 		foreach(self::$_queue[$group][$action] as $_func){
 //			$func = $_func->bindTo($_this);
 			$res = $_func($state);
@@ -36,17 +35,20 @@ class Action {
 	 * actionメソッドによる呼び出しで初めて実行される
 	 * indexはデフォルトが100になり、少ないほうが先に実行される
 	 * group,action,indexが一致した場合次の空いているindexを登録する
+	 * 
 	 * @param string $group
 	 * @param string $action
 	 * @param int $index
-	 * @param type $func
+	 * @param type $func 関数 引数に \CakeHook\State を持たなければならない。
 	 * @return type
 	 * @throws \Exception
 	 */
 	public static function add($group, $action, $index, $func){
 		if(!isset(self::$_queue[$group])) self::$_queue[$group] = [];
 		if(!isset(self::$_queue[$group][$action])) self::$_queue[$group][$action] = [];
-		
+		if(self::$_maxIndex < $index){
+			throw new \Exception('Failed addAction over max index :' . $index);
+		}
 		if(isset(self::$_queue[$group][$action][$index])){
 			$_index = $index + 1;
 			for($i=$_index;$i<self::$_maxIndex + $_index;$i++){
@@ -55,7 +57,7 @@ class Action {
 					return ;
 				}
 			}
-			throw new \Exception('Failed addAction');
+			throw new \Exception('Failed addAction over max index. Not Index :' . $index);
 		}else{
 			self::$_queue[$group][$action][$index] = $func;
 		}
