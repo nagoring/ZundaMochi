@@ -12,7 +12,7 @@ class State {
 	private $_this;
 	/**
 	 * 指定したパラメータを渡す
-	 * 必ず_thisを含む。_thisは呼び出し元のコントローラー
+	 * コントローラーからの呼び出しは必ず_thisを含む。_thisは呼び出し元のコントローラー
 	 * @param array $param
 	 * @eaxample
 	 *	[
@@ -22,7 +22,7 @@ class State {
 	 */
 	public function __construct($param) {
 		$this->param = $param;
-		$this->_this = $param['_this'];
+		$this->_this = isset($param['_this']) ? $param['_this'] : null;
 		unset($this->param['_this']);
 	}
 	/**
