@@ -106,5 +106,9 @@ class Action {
 	public static function is($group, $action){
 		return isset(self::$_queue[$group][$action]);
 	}
+	public static function clear(){
+		return self::$_queue = [];
+	}
+	
 }
 
