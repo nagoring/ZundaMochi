@@ -7,9 +7,9 @@ use Cake\Network\Exception\ForbiddenException;
 use Cake\Event\Event;
 
 class UsersController extends UsersAppController {
-	protected $layout = 'mochi';
 	public function beforeFilter(Event $event) {
 		parent::beforeFilter($event);
+		$this->viewBuilder()->layout('mochi');
 	}
 
 	public function login() {

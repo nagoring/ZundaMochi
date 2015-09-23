@@ -8,15 +8,14 @@ use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 
 class MochiController extends UsersAppController {
-	public $layout = 'mochi';
 	public function beforeFilter(Event $event) {
 		parent::beforeFilter($event);
+		$this->viewBuilder()->layout('mochi');
 	}
 	public function index(){
 
-			$this->set('authUser', $this->Auth->user());
-		
-		$this->render('index', 'mochi');
+		$this->set('authUser', $this->Auth->user());
+		$this->render('index');
 	}
 	public function plugins(){
 		$this->loadModel('PluginSettings');

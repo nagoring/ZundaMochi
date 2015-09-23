@@ -9,7 +9,10 @@ use Cake\Utility\Security;
  * @author nagomi
  */
 class ArticlesController extends UsersAppController {
-	protected $layout = 'mochi';
+	public function beforeFilter(\Cake\Event\Event $event) {
+		parent::beforeFilter($event);
+		$this->viewBuilder()->layout('mochi');
+	}
 //	public function index() {
 //		$articles = $this->Articles->find('all');
 //		var_dump(compact($articles));
