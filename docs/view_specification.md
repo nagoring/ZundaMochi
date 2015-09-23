@@ -71,12 +71,11 @@ Threadの一覧を表示する
 
 + /comunity/communities/view/{community_id}
 ++ /m/co{community_id}
-	- プロジェクトに入っている
-		+ /communities/add_project/
-			Projectの追加
-	- プロジェクトに入っていない
-		+ /communities/join_project/
-			Projectに参加
+	- コミュニティに入っている
+		公開してある情報が見れる
+	- コミュニティに入っていない
+		+ /communities/join/
+			Communityに参加
 	-共通
 		^ view
 		以下の４つの一部の一覧が見える
@@ -108,6 +107,12 @@ Threadの一覧を表示する
 		マイルストーン(Progress)を作成する
 
 	
+	- プロジェクトに入っている
+		+ /communities/add_project/
+			Projectの追加
+	- プロジェクトに入っていない
+		+ /communities/join_project/
+			Projectに参加
 
 
 	
