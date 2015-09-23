@@ -41,6 +41,7 @@ class CommunityRolesTable extends Table
         $this->hasMany('RolePermission', [
             'foreignKey' => 'community_role_id'
         ]);
+		$this->addBehavior('Timestamp');
     }
 
     /**
@@ -89,4 +90,14 @@ class CommunityRolesTable extends Table
         $rules->add($rules->existsIn(['community_id'], 'Communities'));
         return $rules;
     }
+	public function findDefaultPermission(\Cake\ORM\Query $query, array $options){
+		//TODO デフォルト設定をコミュニティで用意する必要がある。とりあえず一般を返すようにする
+		$name = '一般';
+		$community_id = $options['community_id'];
+		return $this->find()
+				->where([
+					'name' => $name,
+					'community_id' => $community_id
+				])->first();
+	}
 }

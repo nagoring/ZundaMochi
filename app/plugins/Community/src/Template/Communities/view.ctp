@@ -37,4 +37,14 @@
             <?= $this->Text->autoParagraph(h($community->body)) ?>
         </div>
     </div>
+	<div class="row">
+		<?php if($is_joined_community):?>
+			<p>このコミュニティに参加しています</p>
+			<p>
+				<a href="/community/communities/quit/<?= $community->id?>">このコミュニティから退会します</a>
+			</p>
+		<?php else:?>
+			<a href="/community/communities/join/<?= $community->id?>">このコミュニティに参加する</a>
+		<?php endif?>
+	</div>
 </div>

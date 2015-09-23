@@ -21,7 +21,7 @@
             <td><?= $this->Number->format($community->id) ?></td>
             <td><?= h($community->title) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $community->id]) ?>
+				<a href="/m/co<?= $community->id ?>">View</a>
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $community->id]) ?>
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $community->id], ['confirm' => __('Are you sure you want to delete # {0}?', $community->id)]) ?>
             </td>

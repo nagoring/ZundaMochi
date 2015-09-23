@@ -9,9 +9,7 @@ use App\Controller\AppController;
  * @property \App\Model\Table\CommunitiesTable $Communities
  */
 class CommunitiesController extends \App\Controller\UsersAppController
-//class CommunitiesController extends \App\Controller\AppController
 {
-	public $layout = 'mochi';
 	public function beforeFilter(\Cake\Event\Event $event) {
 		parent::beforeFilter($event);
 	}

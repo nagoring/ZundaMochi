@@ -15,30 +15,37 @@ use Cake\Validation\Validator;
  */
 class CommunitiesTable extends Table
 {
+//	public function findWithRole(\Cake\ORM\Query $query, array $options){
+//		$community_id = $options['community_id'];
+//		return $this->find()
+//				->where([
+//					'id' => $community_id
+//				])->contain(['CommunityRoles'])->first();
+//	}
 
-//    /**
-//     * Initialize method
-//     *
-//     * @param array $config The configuration for the Table.
-//     * @return void
-//     */
-//    public function initialize(array $config)
-//    {
-//        parent::initialize($config);
-//
-//        $this->table('communities');
-//        $this->displayField('title');
-//        $this->primaryKey('id');
-//
-//        $this->addBehavior('Timestamp');
-//
-//        $this->hasMany('Calendars', [
-//            'foreignKey' => 'community_id'
-//        ]);
-//        $this->hasMany('Members', [
-//            'foreignKey' => 'community_id'
-//        ]);
-//    }
+    /**
+     * Initialize method
+     *
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+
+        $this->table('communities');
+        $this->displayField('title');
+        $this->primaryKey('id');
+
+        $this->addBehavior('Timestamp');
+
+        $this->hasMany('Calendars', [
+            'foreignKey' => 'community_id'
+        ]);
+        $this->hasMany('Members', [
+            'foreignKey' => 'community_id'
+        ]);
+    }
 //
 //    /**
 //     * Default validation rules.

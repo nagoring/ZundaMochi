@@ -63,13 +63,13 @@ class CommunityMembersTable extends Table
 
         $validator
             ->add('modified_at', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('modified_at', 'create')
-            ->notEmpty('modified_at');
+            ->requirePresence('modified', 'create')
+            ->notEmpty('modified');
 
         $validator
             ->add('created_at', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('created_at', 'create')
-            ->notEmpty('created_at');
+            ->requirePresence('created', 'create')
+            ->notEmpty('created');
 
         return $validator;
     }
@@ -88,4 +88,14 @@ class CommunityMembersTable extends Table
         $rules->add($rules->existsIn(['community_role_id'], 'CommunityRoles'));
         return $rules;
     }
+	public function findJoinedMember(\Cake\ORM\Query $query, array $options) {
+		$user_id = $options['user_id'];
+		$community_id = $options['community_id'];
+		return $this->find()
+				->where([
+					'user_id' => $user_id,
+					'community_id' => $community_id
+				])->select(['id'])->first();
+	}
+	
 }
