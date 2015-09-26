@@ -130,4 +130,48 @@ $index = 100;
 	return $ctrl->redirect('/m/co' . $community_id);
 });
 
+/**
+ * コミュニティ退会buttonのあるpage
+ */
+$action = 'quit';
+$index = 100;
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	/* @var $ctrl App\Controller\ArticlesController */
+	$param = $state->getParam();
+	$ctrl = $state->getThis();
+	$ctrl->viewClass = $viewClass;
+	$community_id = (int)$ctrl->request->params['pass'][0];
+	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
+	$community = $communitiesTable->get($community_id);
+	$ctrl->set('community', $community);
+});
+
+/**
+ * コミュニティ退会 logic
+ */
+$action = 'resign';
+$index = 100;
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	/* @var $ctrl App\Controller\ArticlesController */
+	$param = $state->getParam();
+	$ctrl = $state->getThis();
+	$ctrl->viewClass = $viewClass;
+	
+	if(!isset($ctrl->request->data['id'])){
+		//TODO エラー
+	}
+	$user_id = $ctrl->Auth->user('id');
+	$community_id = $ctrl->request->data['id'];
+	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
+	
+	$community = $communitiesTable->get($community_id);
+	
+	exit;
+//	$community_id = (int)$ctrl->request->params['pass'][0];
+//	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
+//	$community = $communitiesTable->get($community_id);
+//	$ctrl->set('community', $community);
+
+});
+
 

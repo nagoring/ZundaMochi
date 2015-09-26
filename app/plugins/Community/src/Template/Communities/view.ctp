@@ -41,7 +41,8 @@
 		<?php if($is_joined_community):?>
 			<p>このコミュニティに参加しています</p>
 			<p>
-			このコミュニティから退会します
+			<a href="/community/communities/quit/<?= $community->id?>">このコミュニティから退会します</a>
+			
 			</p>
 		<?php else:?>
 			<a href="/community/communities/join/<?= $community->id?>">このコミュニティに参加する</a>
