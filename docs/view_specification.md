@@ -72,6 +72,10 @@ Threadの一覧を表示する
 + /comunity/communities/view/{community_id}
 ++ /m/co{community_id}
 	- コミュニティに入っている
+		- 管理人/副管理人
+			Bodyの変更
+			サムネイルの変更
+		- 一般
 		公開してある情報が見れる
 	- コミュニティに入っていない
 		+ /communities/join/

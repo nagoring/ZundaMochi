@@ -117,51 +117,17 @@ $index = 100;
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 	$community_id = (int)$ctrl->request->params['pass'][0];
-	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
-	$communityRolesTable = getTableModel('CommunityRoles', 'Community\Model\Table\CommunityRolesTable');
 	
 	$refere = $ctrl->referer(null, true);
+	//TODO 本当はセッションを使ったCSRFチェックしたいが簡易でリファラーチェック
 	if(substr($refere, 0, 5) !== '/m/co'){
 		return $ctrl->redirect('/m/co' . $community_id);
 	}
-		
-	//TODO デフォルト権限の設定がどこかにありそこで指定する
-	$defaultCommunityRoleEntity = $communityRolesTable->find()->where([
-		'community_id' => $community_id
-	])->contain('Communities')->first();
-	
-	
-	$communityMembersTable = getTableModel('CommunityMembers', 'Community\Model\Table\CommunityMembersTable');
-	$communityMemberEntity = $communityMembersTable->newEntity();
-	$communityMemberEntity->community_id = (int)$community_id;
-	$communityMemberEntity->user_id = (int)$ctrl->Auth->user('id');
-	$communityMemberEntity->community_role_id = $defaultCommunityRoleEntity->id;
-	
-	//既に登録されていた場合は登録を許さない
-	$joinedCommunityMember = $communityMembersTable->find()->where([
-		'community_id' => $communityMemberEntity->community_id,
-		'user_id' => $communityMemberEntity->user_id,
-	])->first();
-	if($joinedCommunityMember){
-		return $ctrl->redirect('/m/co' . $community_id);
+	$communityJoin = Community\Lib\Logic\CommunityJoin::getInstance();
+	if($communityJoin->flow($ctrl) === false){
+		return;
 	}
-	if(!$communityMembersTable->save($communityMemberEntity)){
-		//TODO エラーの場合エラー画面が有っても良いが今は保留
-		throw new \Exception(__('CommunityMemberの関連付けに失敗'));
-	}
-	echo "END";
-	exit;
+	return $ctrl->redirect('/m/co' . $community_id);
 });
-
-//$group = 'ContactManager\Controller\ContactsController';
-//$action = 'index';
-//$index = 100;
-//\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
-//	/* @var $ctrl App\Controller\ArticlesController */
-//	$param = $state->getParam();
-//	$ctrl = $state->getThis();
-//	$ctrl->viewClass = $viewClass;
-//	return 'aaaaaaaa';
-//});
 
 

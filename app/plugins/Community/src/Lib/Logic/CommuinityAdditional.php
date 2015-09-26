@@ -94,16 +94,9 @@ class CommuinityAdditional {
 		}
 	}
 	private function createDefaultRole(){
-		$roleNames = ['管理人','副管理人','一般'];
-		foreach($roleNames as $rolename){
-			$roleEntity = $this->rolesTable->newEntity();
-			$roleEntity->community_id = $this->community_id;
-			$roleEntity->system_flag = 1;
-			$roleEntity->name = $rolename;
-			if(!$this->rolesTable->save($roleEntity)){
-				$this->communitiesTable->connection()->rollback();
-				throw new \Exception(__('ロールの追加に失敗'));
-			}
+		if(!$this->rolesTable->createDefaultRole($this->community_id)){
+			$this->communitiesTable->connection()->rollback();
+			throw new \Exception(__('ロールの追加に失敗'));
 		}
 		return $this;
 	}

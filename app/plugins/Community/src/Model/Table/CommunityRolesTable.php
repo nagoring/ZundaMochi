@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  */
 class CommunityRolesTable extends Table
 {
-
+	private $defaultRole = '一般';
     /**
      * Initialize method
      *
@@ -92,7 +92,7 @@ class CommunityRolesTable extends Table
     }
 	public function findDefaultPermission(\Cake\ORM\Query $query, array $options){
 		//TODO デフォルト設定をコミュニティで用意する必要がある。とりあえず一般を返すようにする
-		$name = '一般';
+		$name = $this->defaultRole;
 		$community_id = $options['community_id'];
 		return $this->find()
 				->where([
@@ -100,4 +100,67 @@ class CommunityRolesTable extends Table
 					'community_id' => $community_id
 				])->first();
 	}
+	/**
+	 * デフォルトのRoleを追加(一般)
+	 * TODO デフォルトはコミュニティの設定で変えても良い
+	 * @param Query $query
+	 * @param array $options
+	 * @return type
+	 */
+	public function findDefaultRole(\Cake\ORM\Query $query, array $options){
+		$community_id = $options['community_id'];
+		return $this->find()->where([
+			'community_id' => $community_id, 
+			'name' => $this->defaultRole, 
+		])->contain('Communities')->first();
+	}
+	/**
+	 * 対象のコミュニティのsystem_flagが1のものを全て取得
+	 * hashで返す[name => id, name => id, name => id]
+	 * @param \Cake\ORM\Query $query
+	 * @param array $options
+	 * ['community_id' => int]
+	 */
+	public function findDefaultRolesHashNameId(\Cake\ORM\Query $query, array $options){
+		$community_id = (int)$options['community_id'];
+		$defaultRoles = $this->find()->where([
+			'id' => $community_id,
+			'system_flag' => 1,
+		])->all();
+		if($defaultRoles === null){
+			return null;
+		}
+		$ret = [];
+		foreach($defaultRoles as $defaultRole){
+			$ret[ $defaultRole->name ] = $defaultRole->id;
+		}
+		return $ret;
+	}
+	/**
+	 * デフォルトRoleを作成する
+	 * @staticvar array $roleNames
+	 * @param type $community_id
+	 * @return boolean
+	 */
+	public function createDefaultRole($community_id){
+		//TODO デフォルトRoleの情報はどこかで持たなければならない
+		static $roleNames = ['管理人','副管理人','一般'];
+		$defaultRolesHashNameId = $this->find('defaultRolesHashNameId', ['community_id' => $community_id]);
+		
+		foreach($roleNames as $rolename){
+			//登録済がチェックを掛けて、登録なしの場合のみ追加
+			if(isset($defaultRolesHashNameId[$rolename]))continue;
+			$roleEntity = $this->newEntity();
+			$roleEntity->community_id = $community_id;
+			$roleEntity->system_flag = 1;
+			$roleEntity->name = $rolename;
+			if($this->save($roleEntity) === false){
+				//TODO Log出力
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
 }
