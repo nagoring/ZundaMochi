@@ -66,6 +66,9 @@ Threadの一覧を表示する
 + /comunity/communities/
 	コミュニティの一覧
 
++ /comunity/communities/joined/
+	参加しているコミュニティの一覧
+
 + /comunity/communities/add/
 	コミュニティの追加
 
@@ -123,5 +126,16 @@ Threadの一覧を表示する
 /communities/view_project/communitiy_id:30/project_id:22
 
 /コントローラー/アクション/パラメータ/パラメータ/パラメータ/
+
+
+SELECT Communities.id AS `Communities__id`, 
+Communities.title AS `Communities__title`, 
+Communities.body AS `Communities__body`, 
+Communities.thumbnail AS `Communities__thumbnail`, 
+Communities.created AS `Communities__created`, 
+Communities.modified AS `Communities__modified` 
+FROM communities Communities 
+
+WHERE Members.user_id = :c0 
 
 

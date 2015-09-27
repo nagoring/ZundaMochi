@@ -25,6 +25,9 @@ class CommunityJoin {
 		try{
 			$this->init($ctrl, $community_id);
 			$default_community_role_id = $this->getDefaultCommunityRoleId();
+			if($default_community_role_id === null){
+				throw new \Exception('default_community_role_idが空');
+			}
 			return $this->joinMember($default_community_role_id);
 		} catch (\Exception $ex) {
 			$this->ctrl->Flash->error(__($ex->getMessage()));
@@ -51,7 +54,7 @@ class CommunityJoin {
 				throw new Exception(__('ロールが追加できません。データベースや設定を見なおして下さい'));
 			}
 		}
-		
+		return $defaultCommunityRoleEntity->id;
 	}
 	/**
 	 * @param type $default_community_role_id

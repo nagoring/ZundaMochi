@@ -97,5 +97,20 @@ class CommunityMembersTable extends Table
 					'community_id' => $community_id
 				])->select(['id'])->first();
 	}
+	public function findJoinedQuery(Query $query, array $options){
+		$user_id = $options['user_id'];
+//		$limit = $options['limit'];
+//		$page = $options['page'];
+//		$communityMembers = getTableModel('CommunityMembers', 'Community\Model\Table\CommunityMembersTable');
+//		return $communityMembers->find()
+		return $query
+				->contain(['Communities'])
+				->where(['CommunityMembers.user_id' => $user_id]);
+//				
+//		return $query->find()
+//				->contain(['Communities'])
+//				->where(['CommunityMembers.user_id' => $user_id])
+//				;
+	}	
 	
 }

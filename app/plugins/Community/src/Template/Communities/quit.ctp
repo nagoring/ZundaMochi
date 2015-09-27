@@ -2,7 +2,10 @@
     <h3>退会画面</h3>
 	<div class="row">
 		このコミュニティから退会しますが宜しいですか？
-    <?= $this->Form->create($community, ['url' => '/community/communities/resign']) ?>
+    <?= $this->Form->create($community, [
+		'url' => '/community/communities/resign',
+		'type' => 'post',
+	]) ?>
 	<?= $this->Form->hidden('id')?>
 	<?= $this->Form->hidden('hoge', ['value' => 'foobar'])?>
     <?= $this->Form->submit(__('Submit')) ?>

@@ -25,6 +25,41 @@ $index = 100;
 
 });
 
+$action = 'joined';
+$index = 100;
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	/* @var $ctrl App\Controller\ArticlesController */
+	$param = $state->getParam();
+	$ctrl = $state->getThis();
+	$ctrl->viewClass = $viewClass;
+	$ctrl->Communities = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
+	$ctrl->CommunityMembers = getTableModel('CommunityMembers', 'Community\Model\Table\CommunityMembersTable');
+	$user_id = $ctrl->Auth->user('id');
+	
+	$page = isset($ctrl->request->query['page']) ? (int)$ctrl->request->query['page'] : 1;
+	$show_community_number = 20;
+	$ctrl->paginate = [
+		'limit' => $show_community_number,
+		'order' => [
+			 'Communities.created' => 'DESC'
+		],
+		'finder' => [
+			'joinedQuery' => [
+				'limit' => $show_community_number,
+				'page' => $page,
+				'user_id' => $user_id
+			]
+		]
+	];
+	try{
+	    $ctrl->set('communityMembers', $ctrl->paginate($ctrl->CommunityMembers));
+	} catch (Cake\Network\Exception\NotFoundException $ex) {
+	    $ctrl->set('communities', []);
+	}
+    $ctrl->set('_serialize', ['communities']);
+
+});
+
 /**
 	Communityをinsert
 	サムネイルがあったら画像をupload	
@@ -124,8 +159,8 @@ $index = 100;
 		return $ctrl->redirect('/m/co' . $community_id);
 	}
 	$communityJoin = Community\Lib\Logic\CommunityJoin::getInstance();
-	if($communityJoin->flow($ctrl) === false){
-		return;
+	if($communityJoin->flow($ctrl, $community_id) === false){
+		return $ctrl->redirect('/m/co' . $community_id);
 	}
 	return $ctrl->redirect('/m/co' . $community_id);
 });
@@ -156,22 +191,26 @@ $index = 100;
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
-	
+	$ctrl->request->allowMethod(['post', 'delete']);
 	if(!isset($ctrl->request->data['id'])){
 		//TODO エラー
 	}
 	$user_id = $ctrl->Auth->user('id');
 	$community_id = $ctrl->request->data['id'];
-	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
+	$communityMembersTable = getTableModel('Communities', 'Community\Model\Table\CommunityMembersTable');
+	$communityMemberEntity = $communityMembersTable->find()->where([
+		'community_id' => $community_id,
+		'user_id' => $user_id,
+	])->first();
+	if($communityMemberEntity === null){
+		return $ctrl->redirect(['url' => "/m/co{$community_id}"]);
+	}
+	if (!$communityMembersTable->delete($communityMemberEntity)) {
+		$ctrl->Flash->error(__('コミュニティから抜けました'));
+		return $ctrl->redirect(['url' => "/m/co{$community_id}"]);
+	}
+	$ctrl->Flash->success(__('コミュニティから抜けました'));
+	return $ctrl->redirect(['url' => "/community/communities/joined/"]);
 	
-	$community = $communitiesTable->get($community_id);
-	
-	exit;
-//	$community_id = (int)$ctrl->request->params['pass'][0];
-//	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
-//	$community = $communitiesTable->get($community_id);
-//	$ctrl->set('community', $community);
-
 });
-
 

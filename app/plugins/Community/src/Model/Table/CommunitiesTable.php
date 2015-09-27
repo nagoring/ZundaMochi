@@ -39,12 +39,13 @@ class CommunitiesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('Calendars', [
+        $this->hasMany('CommunityCalendars', [
             'foreignKey' => 'community_id'
         ]);
-        $this->hasMany('Members', [
+        $this->hasMany('CommunityMembers', [
             'foreignKey' => 'community_id'
         ]);
+		
     }
 //
 //    /**

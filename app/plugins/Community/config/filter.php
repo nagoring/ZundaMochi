@@ -6,8 +6,12 @@
 	$menuList = [
 
 		(object)[
-			'name' => 'コミュニティ',
+			'name' => '全てのコミュニティ',
 			'url' => '/community/communities/',
+		],
+		(object)[
+			'name' => '参加コミュニティ',
+			'url' => '/community/communities/joined/',
 		],
 	];
 	if(is_array($beforeMenuList)){
