@@ -18,8 +18,13 @@ $index = 100;
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
-	$config = TableRegistry::exists('Communities') ? [] : ['className' => 'Community\Model\Table\CommunitiesTable'];
-	$ctrl->Communities = TableRegistry::get('Communities', $config);
+	$ctrl->Communities = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
+	$ctrl->paginate = [
+		'limit' => 20,
+		'order' => [
+			 'Communities.id' => 'DESC'
+		]
+	];
     $ctrl->set('communities', $ctrl->paginate($ctrl->Communities));
     $ctrl->set('_serialize', ['communities']);
 
