@@ -18,7 +18,9 @@ class CommunityCommentsTableTest extends TestCase
      */
     public $fixtures = [
         'app.community_comments',
-        'app.threads'
+        'app.users',
+        'app.community_threads',
+        'app.communities'
     ];
 
     /**

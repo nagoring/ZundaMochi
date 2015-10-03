@@ -8,35 +8,35 @@ use App\Controller\AppController;
  *
  * @property \App\Model\Table\CommunityCommentsTable $CommunityComments
  */
-class CommunityCommentsController extends AppController
+class CommunityCommentsController extends \App\Controller\UsersAppController
 {
 
-    /**
-     * Index method
-     *
-     * @return void
-     */
-    public function index()
-    {
-        $this->set('communityComments', $this->paginate($this->CommunityComments));
-        $this->set('_serialize', ['communityComments']);
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Community Comment id.
-     * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $communityComment = $this->CommunityComments->get($id, [
-            'contain' => []
-        ]);
-        $this->set('communityComment', $communityComment);
-        $this->set('_serialize', ['communityComment']);
-    }
+//    /**
+//     * Index method
+//     *
+//     * @return void
+//     */
+//    public function index()
+//    {
+//        $this->set('communityComments', $this->paginate($this->CommunityComments));
+//        $this->set('_serialize', ['communityComments']);
+//    }
+//
+//    /**
+//     * View method
+//     *
+//     * @param string|null $id Community Comment id.
+//     * @return void
+//     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+//     */
+//    public function view($id = null)
+//    {
+//        $communityComment = $this->CommunityComments->get($id, [
+//            'contain' => []
+//        ]);
+//        $this->set('communityComment', $communityComment);
+//        $this->set('_serialize', ['communityComment']);
+//    }
 
     /**
      * Add method
@@ -47,59 +47,66 @@ class CommunityCommentsController extends AppController
     {
         $communityComment = $this->CommunityComments->newEntity();
         if ($this->request->is('post')) {
+			$this->request->data['user_id'] = $this->Auth->user('id');
             $communityComment = $this->CommunityComments->patchEntity($communityComment, $this->request->data);
+			$community_thread_id = $this->request->data['community_thread_id'];
+			if(!$community_thread_id){
+                return $this->redirect('/');
+			}
             if ($this->CommunityComments->save($communityComment)) {
                 $this->Flash->success(__('The community comment has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect('/community/community_threads/view/' . $community_thread_id);
             } else {
                 $this->Flash->error(__('The community comment could not be saved. Please, try again.'));
+                return $this->redirect('/community/community_threads/view/' . $community_thread_id);
             }
         }
-        $this->set(compact('communityComment'));
-        $this->set('_serialize', ['communityComment']);
+		return $this->redirect('/');
+//        $this->set(compact('communityComment'));
+//        $this->set('_serialize', ['communityComment']);
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Community Comment id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $communityComment = $this->CommunityComments->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $communityComment = $this->CommunityComments->patchEntity($communityComment, $this->request->data);
-            if ($this->CommunityComments->save($communityComment)) {
-                $this->Flash->success(__('The community comment has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The community comment could not be saved. Please, try again.'));
-            }
-        }
-        $this->set(compact('communityComment'));
-        $this->set('_serialize', ['communityComment']);
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Community Comment id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $communityComment = $this->CommunityComments->get($id);
-        if ($this->CommunityComments->delete($communityComment)) {
-            $this->Flash->success(__('The community comment has been deleted.'));
-        } else {
-            $this->Flash->error(__('The community comment could not be deleted. Please, try again.'));
-        }
-        return $this->redirect(['action' => 'index']);
-    }
+//    /**
+//     * Edit method
+//     *
+//     * @param string|null $id Community Comment id.
+//     * @return void Redirects on successful edit, renders view otherwise.
+//     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+//     */
+//    public function edit($id = null)
+//    {
+//        $communityComment = $this->CommunityComments->get($id, [
+//            'contain' => []
+//        ]);
+//        if ($this->request->is(['patch', 'post', 'put'])) {
+//            $communityComment = $this->CommunityComments->patchEntity($communityComment, $this->request->data);
+//            if ($this->CommunityComments->save($communityComment)) {
+//                $this->Flash->success(__('The community comment has been saved.'));
+//                return $this->redirect(['action' => 'index']);
+//            } else {
+//                $this->Flash->error(__('The community comment could not be saved. Please, try again.'));
+//            }
+//        }
+//        $this->set(compact('communityComment'));
+//        $this->set('_serialize', ['communityComment']);
+//    }
+//
+//    /**
+//     * Delete method
+//     *
+//     * @param string|null $id Community Comment id.
+//     * @return void Redirects to index.
+//     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+//     */
+//    public function delete($id = null)
+//    {
+//        $this->request->allowMethod(['post', 'delete']);
+//        $communityComment = $this->CommunityComments->get($id);
+//        if ($this->CommunityComments->delete($communityComment)) {
+//            $this->Flash->success(__('The community comment has been deleted.'));
+//        } else {
+//            $this->Flash->error(__('The community comment could not be deleted. Please, try again.'));
+//        }
+//        return $this->redirect(['action' => 'index']);
+//    }
 }

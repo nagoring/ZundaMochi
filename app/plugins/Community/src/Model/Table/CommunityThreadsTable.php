@@ -1,7 +1,7 @@
 <?php
 namespace Community\Model\Table;
 
-use App\Model\Entity\CommunityThread;
+use Community\Model\Entity\CommunityThread;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;

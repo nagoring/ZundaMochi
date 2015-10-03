@@ -10,7 +10,8 @@ use Cake\Validation\Validator;
 /**
  * CommunityComments Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Threads
+ * @property \Cake\ORM\Association\BelongsTo $Users
+ * @property \Cake\ORM\Association\BelongsTo $CommunityThreads
  */
 class CommunityCommentsTable extends Table
 {
@@ -31,8 +32,12 @@ class CommunityCommentsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Threads', [
-            'foreignKey' => 'thread_id',
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('CommunityThreads', [
+            'foreignKey' => 'community_thread_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -64,7 +69,9 @@ class CommunityCommentsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['thread_id'], 'Threads'));
+        $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsIn(['community_thread_id'], 'CommunityThreads'));
         return $rules;
     }
 }
+
