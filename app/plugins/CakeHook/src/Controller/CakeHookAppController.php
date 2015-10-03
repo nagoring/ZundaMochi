@@ -60,15 +60,18 @@ class CakeHookAppController extends Controller {
 		'plugin' => $request->params['plugin'],
 			]);
 		}
+		if ($isAction) {
+			$action = $request->params['action'];
+			$index = 100;
+			\CakeHook\Action::add(get_class($this), $action, $index, function(\CakeHook\State $state) use($action){
+				$this->$action();
+			});
+		}
 		\CakeHook\Action::action(get_class($this), $request->params['action'], [
 			'pass' => $request->params['pass'],
 			'controller' => $this,
 			'_this' => $this,
 		]);
-		if ($isAction) {
-			$callable = [$this, $request->params['action']];
-			call_user_func_array($callable, $request->params['pass']);
-		}
 	}
     public function isAction($action)
     {
