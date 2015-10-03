@@ -34,18 +34,29 @@
             <?= $this->Text->autoParagraph(h($community->body)) ?>
         </div>
     </div>
+	<?php if($is_joined_community):?>
 	<div class="row">
-		スレッドを立てる
+		<p>
+			<a href="/community/community_threads/add/<?= $community->id?>">スレッドを立てる</a>
+		</p>
+		<?php foreach($communityThreadEntities as $communityThreadEntity):?>
+		<p>
+			<a href="/community/community_threads/view/<?= $communityThreadEntity->id?>"><?= $communityThreadEntity->title?></a>
+		</p>
+		<?php endforeach?>
 	</div>
 	<div class="row">
-		<?php if($is_joined_community):?>
-			<p>このコミュニティに参加しています</p>
-			<p>
+		<p>このコミュニティに参加しています</p>
+		<p>
 			<a href="/community/communities/quit/<?= $community->id?>">このコミュニティから退会します</a>
-			
-			</p>
-		<?php else:?>
-			<a href="/community/communities/join/<?= $community->id?>">このコミュニティに参加する</a>
-		<?php endif?>
+		</p>
 	</div>
+	<?php else:?>
+	<div class="row">
+		<p>
+		<a href="/community/communities/quit/<?= $community->id?>">このコミュニティから退会します</a>
+		</p>
+		<a href="/community/communities/join/<?= $community->id?>">このコミュニティに参加する</a>
+	</div>
+	<?php endif?>
 </div>

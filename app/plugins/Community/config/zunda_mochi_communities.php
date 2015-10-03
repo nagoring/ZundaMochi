@@ -129,6 +129,7 @@ $index = 100;
 	$community_id = (int)$ctrl->request->params['id'];
 	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
 	$communityMembersTable = getTableModel('CommunityMembers', 'Community\Model\Table\CommunityMembersTable');
+	$communityThreadsTable = getTableModel('CommunityThreads', 'Community\Model\Table\CommunityThreadsTable');
 	$community = $communitiesTable->get($community_id);
 	$member = $communityMembersTable->find('joinedMember',[
 		'user_id' => $user_id,
@@ -136,11 +137,30 @@ $index = 100;
 	]);
 	if($member){
 		//コミュニティ参加者
+		$communityThreadEntities = $communityThreadsTable
+				->find()
+				->where([
+					'community_id' => $community_id,
+				])
+				->order(['id' => 'DESC'])
+				->limit(10)
+				->all();
 	    $ctrl->set('is_joined_community', true);
 	}else{
 		//コミュニティ未加入
+		$communityThreadEntities = $communityThreadsTable
+				->find()
+				->where([
+					'user_id' => $user_id,
+					'community_id' => $community_id,
+					'publish' => 'Web',
+				])
+				->order(['id' => 'DESC'])
+				->limit(10)
+				->all();
 	    $ctrl->set('is_joined_community', false);
 	}
+    $ctrl->set('communityThreadEntities', $communityThreadEntities);
 	unset($member);
 	
     $ctrl->set('community', $community);
@@ -202,7 +222,7 @@ $index = 100;
 	}
 	$user_id = $ctrl->Auth->user('id');
 	$community_id = $ctrl->request->data['id'];
-	$communityMembersTable = getTableModel('Communities', 'Community\Model\Table\CommunityMembersTable');
+	$communityMembersTable = getTableModel('CommunityMembers', 'Community\Model\Table\CommunityMembersTable');
 	$communityMemberEntity = $communityMembersTable->find()->where([
 		'community_id' => $community_id,
 		'user_id' => $user_id,

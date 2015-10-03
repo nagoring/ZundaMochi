@@ -30,15 +30,37 @@
         </tr>
         <tr>
             <th><?= __('Modified') ?></th>
-            <td><?= h($communityThread->modified) ?></tr>
+            <td><?= h($communityThread->modified) ?></td>
         </tr>
         <tr>
             <th><?= __('Created') ?></th>
-            <td><?= h($communityThread->created) ?></tr>
+            <td><?= h($communityThread->created) ?></td>
         </tr>
     </table>
     <div class="row">
-        <h4><?= __('Body') ?></h4>
+        <h4><?= __('スレッド') ?></h4>
         <?= $this->Text->autoParagraph(h($communityThread->body)); ?>
     </div>
 </div>
+<div class="communityComments form large-9 medium-8 columns content">
+	<h4><?= __('コメントを書く') ?></h4>
+    <fieldset>
+		<?= $this->Form->create($communityCommentEntities, [
+			'type' => 'post',
+			'url' => '/community/community_comments/add',
+		])?>
+		<?= $this->Form->textarea('body')?>
+		<?= $this->Form->hidden('community_thread_id', ['value' => $communityThread->id]) ?>
+		<?= $this->Form->hidden('community_id', ['value' => $communityThread->community_id]) ?>
+		<?= $this->Form->button(__('コメントする')) ?>
+		<?= $this->Form->end()?>
+	</fieldset>
+	
+</div>
+
+<?php foreach($communityCommentEntities as $communityCommentEntity):?>
+	<?= h($communityCommentEntity->title) ?>
+	<?= h($communityCommentEntity->body) ?>
+<?php endforeach; ?>
+
+	
