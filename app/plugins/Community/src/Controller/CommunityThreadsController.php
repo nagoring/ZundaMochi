@@ -10,7 +10,10 @@ use App\Controller\AppController;
  */
 class CommunityThreadsController extends \App\Controller\UsersAppController
 {
-
+	public function beforeFilter(\Cake\Event\Event $event) {
+		parent::beforeFilter($event);
+		$this->viewBuilder()->layout('mochi');
+	}
 //    /**
 //     * Index method
 //     *

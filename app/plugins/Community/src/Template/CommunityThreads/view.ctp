@@ -1,6 +1,7 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
+        <li><a href="/m/co<?=$communityThread->community_id?>">コミュニティトップ</a> </li>
         <li><?= $this->Html->link(__('Edit Community Thread'), ['action' => 'edit', $communityThread->id]) ?> </li>
         <li><?= $this->Form->postLink(__('Delete Community Thread'), ['action' => 'delete', $communityThread->id], ['confirm' => __('Are you sure you want to delete # {0}?', $communityThread->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Community Threads'), ['action' => 'index']) ?> </li>
@@ -43,6 +44,14 @@
     </div>
 </div>
 <div class="communityComments form large-9 medium-8 columns content">
+		<h4><?= __('コメント') ?></h4>
+		<?php foreach($communityCommentEntities as $communityCommentEntity):?>
+			<div class="row">
+			<?= h($communityCommentEntity->created) ?>
+			<?= h($communityCommentEntity->title) ?>
+			<?= h($communityCommentEntity->body) ?>
+			</div>
+		<?php endforeach; ?>
 	<h4><?= __('コメントを書く') ?></h4>
     <fieldset>
 		<?= $this->Form->create($communityCommentEntities, [
@@ -58,9 +67,5 @@
 	
 </div>
 
-<?php foreach($communityCommentEntities as $communityCommentEntity):?>
-	<?= h($communityCommentEntity->title) ?>
-	<?= h($communityCommentEntity->body) ?>
-<?php endforeach; ?>
 
 	
