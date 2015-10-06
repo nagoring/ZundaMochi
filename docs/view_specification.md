@@ -114,8 +114,6 @@
 	- Resultが見れる
 	+ /projects/add_progress
 		- マイルストーン(Progress)を作成する
-
-
 	- プロジェクトに入っている
 		+ /communities/add_project/
 			- Projectの追加
