@@ -13,6 +13,7 @@ class UsersController extends UsersAppController {
 	}
 
 	public function login() {
+		$this->viewBuilder()->layout('home');
 		if ($this->request->is('post')) {
 			$user = $this->Auth->identify();
 			if ($user) {
@@ -40,8 +41,10 @@ class UsersController extends UsersAppController {
 	}
 
 	public function add() {
+		$this->viewBuilder()->layout('home');
 		$user = $this->Users->newEntity($this->request->data);
 		if ($this->request->is('post')) {
+			$user->role = 'author';
 			if ($this->Users->save($user)) {
 				$this->Flash->success(__('The user has been saved.'));
 				return $this->redirect(['action' => 'add']);
