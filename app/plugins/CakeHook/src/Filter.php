@@ -3,7 +3,7 @@ namespace CakeHook;
 
 class Filter {
 	protected static $_queue = [];
-	protected static $_maxIndex = 120;
+	protected static $_maxIndex = 1024;
 	/**
 	 * execute addtional filter
 	 * @param string $label
@@ -31,6 +31,9 @@ class Filter {
 	 */
 	public static function add($label, $index, $func){
 		if(!isset(self::$_queue[$label])) self::$_queue[$label] = [];
+		if(self::$_maxIndex < $index){
+			throw new \Exception('Failed add in Filter class over max index. Not Index :' . $index);
+		}		
 		if(isset(self::$_queue[$label][$index])){
 			$_index = $index + 1;
 			for($i=$_index;$i<self::$_maxIndex;$i++){
@@ -39,7 +42,7 @@ class Filter {
 					return ;
 				}
 			}
-			throw new \Exception('Failed add11');
+			throw new \Exception('Failed add in Filter class over max index. Not Index :' . $index);
 		}else{
 			self::$_queue[$label][$index] = $func;
 		}
@@ -81,7 +84,7 @@ class Filter {
 	 * clear the method that has been registered
 	 */
 	public static function clear(){
-		unset(self::$_queue);
+		self::$_queue = [];
 	}
 }
 
