@@ -4,6 +4,14 @@ namespace CakeHook;
 class Filter {
 	protected static $_queue = [];
 	protected static $_maxIndex = 1024;
+	protected static $ctrl;
+	
+	public static function setCtrl($ctrl){
+		self::$ctrl = $ctrl;
+	}
+	public static function getCtrl(){
+		return self::$ctrl;
+	}
 	/**
 	 * execute addtional filter
 	 * @param string $label

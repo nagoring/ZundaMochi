@@ -17,7 +17,7 @@
     <tbody>
     <?php foreach ($communities as $community): ?>
         <tr>
-            <td><img src="<?= $community->img_url?>"></td>
+            <td><a href="/m/co<?= $community->id ?>"><img src="<?= $community->img_url?>"></a></td>
             <td><?= $this->Number->format($community->id) ?></td>
             <td><?= h($community->title) ?></td>
             <td class="actions">

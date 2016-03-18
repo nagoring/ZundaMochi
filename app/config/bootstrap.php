@@ -212,3 +212,14 @@ foreach($activationPluginArray as $plugin){
 
 Configure::write('DIR_COMMUNITY', 'community');
 
+Configure::write('Session', array(
+      'defaults' => 'php',
+      'timeout'  => 60 * 24 * 7,  // 一週間
+      'cookieTimeout' => 60 * 24 * 7, // 半年
+      'autoRegenerate' => false,
+      'ini' => array(
+                  'session.gc_maxlifetime' => 60 * 60 * 24 * 7,  // 一
+		  
+		  
+          )
+  ));

@@ -57,13 +57,13 @@ class CommunitiesController extends \App\Controller\UsersAppController
 //        $this->set('_serialize', ['community']);
 //    }
 //
-//    /**
-//     * Edit method
-//     *
-//     * @param string|null $id Community id.
-//     * @return void Redirects on successful edit, renders view otherwise.
-//     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-//     */
+    /**
+     * Edit method
+     *
+     * @param string|null $id Community id.
+     * @return void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
 //    public function edit($id = null)
 //    {
 //        $community = $this->Communities->get($id, [

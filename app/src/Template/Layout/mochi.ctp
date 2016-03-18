@@ -46,6 +46,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <span><a style="color:#ffffff;" href="/mochi/"><?= $this->fetch('title') ?></a></span>
         </div>
         <div class="header-help">
+            <span>
+				 <?= $loginUser['username']?>さんいらっしゃい
+			</span>
             <span><a target="_blank" href="/users/logout">Logout</a></span>
             <span><a target="_blank" href="http://book.cakephp.org/3.0/">Documentation</a></span>
             <span><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></span>

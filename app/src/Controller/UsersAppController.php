@@ -43,27 +43,32 @@ class UsersAppController extends \App\Controller\AppController {
 				'controller' => 'Mochi',
 				'action' => 'login',
 			]);
+		\CakeHook\Filter::setCtrl($this);
 		\CakeHook\Filter::add('admin_menu_list', 101, function(\CakeHook\FilterState $state){
 			$beforeMenuList = $state->getReturn();
-			$menuList = [
-				(object)[
-					'name' => 'ダッシュボード',
-					'url' => '/mochi/',
-				],
-				(object)[
+			$menuList = [];
+			$authUtil = \App\Lib\Util\Auth::getInstance($this);
+			if($authUtil->isDeveloper()){
+				$menuList[] = (object)[
 					'name' => 'プラグイン',
 					'url' => '/mochi/plugins',
-				],
-				(object)[
+				];
+				$menuList[] = (object)[
 					'name' => 'プラグインインストール',
 					'url' => '/mochi/plugins_install',
-				],
+				];
+			}
+			$menuList[] = (object)[
+				'name' => 'ダッシュボード',
+				'url' => '/mochi/',
 			];
+			
 			if(is_array($beforeMenuList)){
 				$menuList = array_merge($beforeMenuList, $menuList);
 			}
 			return $menuList;
 		});
+		$this->set('loginUser', $this->Auth->user());
 	}
 	/**
 	 * Initialization hook method.

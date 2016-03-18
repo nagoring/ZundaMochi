@@ -11,7 +11,6 @@ class UsersController extends UsersAppController {
 		parent::beforeFilter($event);
 		$this->viewBuilder()->layout('mochi');
 	}
-
 	public function login() {
 		$this->viewBuilder()->layout('home');
 		if ($this->request->is('post')) {
@@ -28,6 +27,10 @@ class UsersController extends UsersAppController {
 	}
 
 	public function index() {
+		$authUtil = \App\Lib\Util\Auth::getInstance($this);
+		if(!$authUtil->isDeveloper()){
+			$this->redirect('/mochi');
+		}
 		$this->set('users', $this->Users->find('all'));
 	}
 

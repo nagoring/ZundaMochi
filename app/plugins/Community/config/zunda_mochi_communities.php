@@ -18,7 +18,7 @@ $index = 100;
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
-	$ctrl->Communities = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
+	$ctrl->Communities = \Community\Model\Core::getCommunitiesTable();
 	$ctrl->paginate = [
 		'limit' => 20,
 		'order' => [
@@ -37,8 +37,10 @@ $index = 100;
 	$param = $state->getParam();
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
-	$ctrl->Communities = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
-	$ctrl->CommunityMembers = getTableModel('CommunityMembers', 'Community\Model\Table\CommunityMembersTable');
+	$ctrl->Communities = \Community\Model\Core::getCommunitiesTable();
+	$ctrl->CommunityMembers = \Community\Model\Core::getCommunityMembersTable();
+	
+	
 	$user_id = $ctrl->Auth->user('id');
 	
 	$page = isset($ctrl->request->query['page']) ? (int)$ctrl->request->query['page'] : 1;
@@ -86,8 +88,7 @@ $index = 100;
 		$communityAddtionalLogic->flow($ctrl);
 		$community = $communityAddtionalLogic->fetchCommunity();
 	}else{
-		$config = TableRegistry::exists('CommunityRoles') ? [] : ['className' => 'Community\Model\Table\CommunitiesTable'];
-		$communitiesTable = TableRegistry::get('Communities', $config);
+		$communitiesTable = \Community\Model\Core::getCommunitiesTable();
 		$community = $communitiesTable->newEntity();
 	}
 	$ctrl->set(compact('community'));
@@ -127,9 +128,9 @@ $index = 100;
 	$ctrl->viewClass = $viewClass;
 	$user_id = (int)$ctrl->Auth->user('id');
 	$community_id = (int)$ctrl->request->params['id'];
-	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
-	$communityMembersTable = getTableModel('CommunityMembers', 'Community\Model\Table\CommunityMembersTable');
-	$communityThreadsTable = getTableModel('CommunityThreads', 'Community\Model\Table\CommunityThreadsTable');
+	$communitiesTable = \Community\Model\Core::getCommunitiesTable();
+	$communityMembersTable = \Community\Model\Core::getCommunityMembersTable();
+	$communityThreadsTable = \Community\Model\Core::getCommunityThreadsTable();
 	$community = $communitiesTable->get($community_id);
 	$member = $communityMembersTable->find('joinedMember',[
 		'user_id' => $user_id,
@@ -201,7 +202,8 @@ $index = 100;
 	$ctrl = $state->getThis();
 	$ctrl->viewClass = $viewClass;
 	$community_id = (int)$ctrl->request->params['pass'][0];
-	$communitiesTable = getTableModel('Communities', 'Community\Model\Table\CommunitiesTable');
+	$communitiesTable = \Community\Model\Core::getCommunitiesTable();;
+	
 	$community = $communitiesTable->get($community_id);
 	$ctrl->set('community', $community);
 });
@@ -222,7 +224,7 @@ $index = 100;
 	}
 	$user_id = $ctrl->Auth->user('id');
 	$community_id = $ctrl->request->data['id'];
-	$communityMembersTable = getTableModel('CommunityMembers', 'Community\Model\Table\CommunityMembersTable');
+	$communityMembersTable = \Community\Model\Core::getCommunityMembersTable();
 	$communityMemberEntity = $communityMembersTable->find()->where([
 		'community_id' => $community_id,
 		'user_id' => $user_id,
@@ -239,3 +241,39 @@ $index = 100;
 	
 });
 
+/**
+ * コミュニティ編集
+ */
+$action = 'edit';
+$index = 100;
+\CakeHook\Action::add($group, $action, $index, function(\CakeHook\State $state) use($viewClass) {
+	/* @var $ctrl App\Controller\ArticlesController */
+	$param = $state->getParam();
+	$ctrl = $state->getThis();
+	$ctrl->viewClass = $viewClass;
+//	$ctrl->request->allowMethod(['post', 'delete']);
+	if(!isset($ctrl->request->params['pass'][0])){
+		var_dump($ctrl->request->params['pass']);
+		//TODO エラー
+		exit("error");
+	}
+	
+	
+	$communityMembersTable = \Community\Model\Core::getCommunityMembersTable();
+	
+	$community_id = $ctrl->request->params['pass'][0];
+	$user_id = $ctrl->Auth->user('id');
+	
+	$communityMemberEntity = $communityMembersTable->find()->where([
+		'community_id' => $community_id,
+		'user_id' => $user_id,
+	])->first();
+	if($communityMemberEntity === null){
+		return $ctrl->redirect(['url' => "/m/co{$community_id}"]);
+	}
+	
+	
+	exit;
+//	return $ctrl->redirect(['url' => "/community/communities/edit/"]);
+	
+});
