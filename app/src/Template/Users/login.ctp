@@ -2,9 +2,15 @@
 <?= $this->Flash->render('auth') ?>
 <?= $this->Form->create() ?>
     <fieldset>
-        <legend><?= __('Please enter your username and password') ?></legend>
-        <?= $this->Form->input('username') ?>
-        <?= $this->Form->input('password') ?>
+        <legend><?= __('メールアドレスとパスワードを入力してログインして下さい。') ?></legend>
+		<label>メールアドレス</label>
+        <?= $this->Form->input('username', [
+			'label' => ''
+		]) ?>
+		<label>パスワード</label>
+        <?= $this->Form->input('password', [
+			'label' => ''
+		]) ?>
     </fieldset>
 <?= $this->Form->button(__('Login')); ?>
 <?= $this->Form->end() ?>

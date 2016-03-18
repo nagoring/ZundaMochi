@@ -8,11 +8,11 @@ CakeHook\Filter::add('admin_menu_list', 101, function(\CakeHook\FilterState $sta
 	$user = $ctrl->Auth->user();
 	$menuList = [];
 	if($user['role'] === 'admin'){
-		$menuList[] = (object)[
-				'name' => 'ユーザーリスト',
-				'url' => '/users/index/',
-		];
 	}
+	$menuList[] = (object)[
+			'name' => 'ユーザーリスト',
+			'url' => '/users/index/',
+	];
 	$menuList[] = (object)[
 			'name' => '記事一覧',
 			'url' => '/articles/',

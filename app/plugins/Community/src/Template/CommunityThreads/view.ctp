@@ -2,12 +2,6 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><a href="/m/co<?=$communityThread->community_id?>">コミュニティトップ</a> </li>
-        <li><?= $this->Html->link(__('Edit Community Thread'), ['action' => 'edit', $communityThread->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Community Thread'), ['action' => 'delete', $communityThread->id], ['confirm' => __('Are you sure you want to delete # {0}?', $communityThread->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Community Threads'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Community Thread'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Communities'), ['controller' => 'Communities', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Community'), ['controller' => 'Communities', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
 <div class="communityThreads view large-9 medium-8 columns content">

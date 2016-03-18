@@ -11,7 +11,7 @@
             <th>gazo</th>
             <th><?= $this->Paginator->sort('id') ?></th>
             <th><?= $this->Paginator->sort('title') ?></th>
-            <th class="actions"><?= __('Actions') ?></th>
+            <th><?= $this->Paginator->sort('body') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -20,11 +20,7 @@
             <td><a href="/m/co<?= $community->id ?>"><img src="<?= $community->img_url?>"></a></td>
             <td><?= $this->Number->format($community->id) ?></td>
             <td><?= h($community->title) ?></td>
-            <td class="actions">
-				<a href="/m/co<?= $community->id ?>">View</a>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $community->id]) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $community->id], ['confirm' => __('Are you sure you want to delete # {0}?', $community->id)]) ?>
-            </td>
+            <td><?= mb_substr(h($community->body), 0, 255); ?></td>
         </tr>
 
     <?php endforeach; ?>

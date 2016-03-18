@@ -33,6 +33,7 @@ class UsersAppController extends \App\Controller\AppController {
 		parent::beforeFilter($event);
 		\CakeHook\Filter::filter('app.beforeFilter', $event);
 		$this->Auth->allow('add');
+		$this->Auth->allow('add_real');
 		$this->Auth->allow(['logout']);
 		$this->Auth->config('loginRedirect', [
 				'controller' => 'Mochi',
